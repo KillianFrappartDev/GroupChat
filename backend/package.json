@@ -1,0 +1,11 @@
+{
+  "name": "group-chat",
+  "version": "1.0.0",
+  "description": "Instant messaging app project",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Killian Frappart",
+  "license": "ISC"
+}
