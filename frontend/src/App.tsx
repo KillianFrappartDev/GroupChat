@@ -1,10 +1,9 @@
 import React from 'react';
 
 // Local Imports
-import AppView from './views/AppView/index';
 
-function App() {
-  return <AppView />;
-}
+const App: React.FC = () => {
+  return <h1>GroupChat</h1>;
+};
 
 export default App;
