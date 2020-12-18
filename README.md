@@ -1,1 +1,1 @@
-![Logo](https://ibb.co/wWDHq3P)
+![alt](https://i.ibb.co/mqQsK12/gc-logo.png)
