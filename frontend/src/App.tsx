@@ -1,7 +1,10 @@
 import React from 'react';
 
+// Local Imports
+import AppView from './views/AppView/index';
+
 function App() {
-  return <h1>Hello World!</h1>;
+  return <AppView />;
 }
 
 export default App;
