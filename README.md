@@ -1,1 +1,1 @@
-![alt](https://i.ibb.co/g6FjRPB/gc-logo-nobg.png =250x)
+<img src="https://i.ibb.co/yVBfQYb/gc-logo-nobg.png" alt="gc-logo-nobg" border="0" width="300px">
