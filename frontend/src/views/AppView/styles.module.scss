@@ -1,3 +1,9 @@
+@mixin columnLayout {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
 .container {
   width: 100%;
   height: 100vh;
@@ -6,6 +12,7 @@
   .main {
     flex: 3;
     background-color: #252329;
+    @include columnLayout;
   }
 
   .side {
