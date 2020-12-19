@@ -6,7 +6,12 @@ import styles from './styles.module.scss';
 type Props = {};
 
 const AppView: React.FC<Props> = props => {
-  return <h1>App View</h1>;
+  return (
+    <div className={styles.container}>
+      <div className={styles.side}></div>
+      <div className={styles.main}></div>
+    </div>
+  );
 };
 
 export default AppView;

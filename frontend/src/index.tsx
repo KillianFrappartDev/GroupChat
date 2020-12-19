@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 
 // Local imports
 import App from './App';
+import './index.scss';
 
 ReactDOM.render(
   <React.StrictMode>
@@ -10,4 +11,3 @@ ReactDOM.render(
   </React.StrictMode>,
   document.getElementById('root')
 );
-
