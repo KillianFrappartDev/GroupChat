@@ -18,3 +18,18 @@ export const DUMMY_MESSAGES = [
     username: 'Elena White'
   }
 ];
+
+export const DUMMY_GROUPS = [
+  {
+    title: 'Welcome 👋',
+    tag: 'WE'
+  },
+  {
+    title: 'Front-End 🖥',
+    tag: 'FE'
+  },
+  {
+    title: 'Back-End 📂',
+    tag: 'BE'
+  }
+];
