@@ -9,13 +9,13 @@ import styles from './styles.module.scss';
 type Props = {
   arrowClick: () => void;
   plusClick: () => void;
-  isInChannel: boolean;
+  inChannel: boolean;
 };
 
 const TopBar: React.FC<Props> = props => {
   return (
     <div className={styles.container}>
-      {props.isInChannel ? (
+      {props.inChannel ? (
         <div className={styles.wrapperInChannel}>
           <IconButton className={styles.arrowButton} onClick={props.arrowClick}>
             <ArrowBackIosIcon className={styles.arrow} />

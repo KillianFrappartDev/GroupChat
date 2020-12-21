@@ -24,8 +24,8 @@ type MembersProps = {
 const Members: React.FC<MembersProps> = props => {
   return (
     <div className={styles.container}>
+      <p className={styles.title}>Members</p>
       <div className={styles.wrapper}>
-        <p className={styles.title}>Members</p>
         {props.members.map(member => (
           <Member username={member.username} image={member.image} />
         ))}

@@ -2,6 +2,8 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  overflow: scroll;
+  margin: 20px 0;
 }
 
 .wrapper {
@@ -18,6 +20,7 @@
   font-size: 20px;
   color: #e0e0e0;
   margin: 20px 0;
+  width: 95%;
 }
 
 .username {

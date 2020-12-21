@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 // Local Imports
 import Messages from '../../components/Main/Messages/index';
@@ -16,20 +16,30 @@ import styles from './styles.module.scss';
 type Props = {};
 
 const AppView: React.FC<Props> = props => {
+  const [inChannel, setInChannel] = useState(true);
+
+  let sideContent;
+  if (inChannel) {
+    sideContent = (
+      <div className={styles.sideContent}>
+        <GroupInfo />
+        <Members members={DUMMY_MEMBERS} />
+      </div>
+    );
+  } else {
+    sideContent = (
+      <div className={styles.sideContent}>
+        <Search />
+        <Groups groups={DUMMY_GROUPS} />
+      </div>
+    );
+  }
+
   return (
     <div className={styles.container}>
       <div className={styles.side}>
-        <SideTopBar
-          isInChannel={false}
-          arrowClick={() => console.log('Clicked')}
-          plusClick={() => console.log('Clicked')}
-        />
-        <div className={styles.sideContent}>
-          <GroupInfo />
-          <Members members={DUMMY_MEMBERS} />
-          {/* <Search />
-          <Groups groups={DUMMY_GROUPS} /> */}
-        </div>
+        <SideTopBar inChannel arrowClick={() => setInChannel(false)} plusClick={() => console.log('Clicked')} />
+        {sideContent}
         <BottomBar exitClick={() => console.log('Clicked')} />
       </div>
       <div className={styles.main}>
