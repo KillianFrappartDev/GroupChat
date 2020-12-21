@@ -1,0 +1,39 @@
+// List
+.container {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  overflow-y: scroll;
+}
+
+.wrapper {
+  width: 95%;
+  padding: 20px;
+}
+
+// Message
+
+.messageContainer {
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.image {
+  width: 65px;
+  height: 65px;
+  border-radius: 50%;
+}
+
+.textBox {
+  margin: 30px 0px 30px 20px;
+}
+
+.username {
+  color: #828282;
+}
+
+.message {
+  color: #e0e0e0;
+  font-size: 13px;
+}

@@ -1,6 +1,7 @@
 import React from 'react';
 
 // Local Imports
+import Messages from '../../components/Main/Messages/index';
 import MsgInput from '../../components/Main/MsgInput/index';
 import TopBar from '../../components/Main/TopBar/index';
 import styles from './styles.module.scss';
@@ -13,7 +14,7 @@ const AppView: React.FC<Props> = props => {
       <div className={styles.side}></div>
       <div className={styles.main}>
         <TopBar title="Front-End" menuClick={() => console.log('Clicked')} />
-        <div>PlaceHolder</div>
+        <Messages />
         <MsgInput />
       </div>
     </div>
