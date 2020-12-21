@@ -3,34 +3,35 @@ import React from 'react';
 // Local Imports
 import styles from './styles.module.scss';
 
-type PropsMessage = {};
+type PropsMessage = {
+  username: string;
+  text: string;
+  image: string;
+};
 
 const Message: React.FC<PropsMessage> = props => {
   return (
     <div className={styles.messageContainer}>
-      <img
-        className={styles.image}
-        alt="User image"
-        src="https://images.pexels.com/photos/1220757/pexels-photo-1220757.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260"
-      />
+      <img className={styles.image} alt="User image" src={props.image} />
       <div className={styles.textBox}>
-        <p className={styles.username}>John Smith</p>
-        <p className={styles.message}>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Soluta quam quibusdam dolorem rem quisquam illo nemo
-          necessitatibus hic quidem ipsam, ullam corrupti quae cum cumque aperiam blanditiis. Beatae, vero facilis!
-        </p>
+        <p className={styles.username}>{props.username}</p>
+        <p className={styles.message}>{props.text}</p>
       </div>
     </div>
   );
 };
 
-type PropsMessages = {};
+type PropsMessages = {
+  messages: PropsMessage[];
+};
 
 const Messages: React.FC<PropsMessages> = props => {
   return (
     <div className={styles.container}>
       <div className={styles.wrapper}>
-        <Message />
+        {props.messages.map(message => (
+          <Message username={message.username} text={message.text} image={message.image} />
+        ))}
       </div>
     </div>
   );
