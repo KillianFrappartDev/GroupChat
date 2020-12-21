@@ -21,7 +21,7 @@ const AppView: React.FC<Props> = props => {
           plusClick={() => console.log('Clicked')}
         />
         <h1>Place Holder</h1>
-        <BottomBar />
+        <BottomBar exitClick={() => console.log('Clicked')} />
       </div>
       <div className={styles.main}>
         <MainTopBar title="Front-End" menuClick={() => console.log('Clicked')} />
