@@ -1,0 +1,25 @@
+.container {
+  padding: 6px;
+  margin-top: 20px;
+  display: flex;
+  align-items: center;
+  width: 95%;
+  background-color: #3c393f;
+  align-self: center;
+  border-radius: 8px;
+}
+
+.input {
+  margin-left: 5px;
+  flex: 1;
+  color: #e0e0e0 !important;
+}
+
+.iconButton {
+  padding: 8px;
+  border-radius: 8px !important;
+}
+
+.search {
+  color: #e0e0e0;
+}
