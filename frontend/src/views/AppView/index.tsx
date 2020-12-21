@@ -27,7 +27,7 @@ const AppView: React.FC<Props> = props => {
         <BottomBar exitClick={() => console.log('Clicked')} />
       </div>
       <div className={styles.main}>
-        <MainTopBar title="Front-End" menuClick={() => console.log('Clicked')} />
+        <MainTopBar title="Welcome 👋" menuClick={() => console.log('Clicked')} />
         <Messages messages={DUMMY_MESSAGES} />
         <MsgInput />
       </div>
