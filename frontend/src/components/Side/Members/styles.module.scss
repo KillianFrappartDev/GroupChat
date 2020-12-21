@@ -1,0 +1,35 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: scroll;
+  margin: 20px 0;
+}
+
+.wrapper {
+  width: 95%;
+}
+
+.member {
+  display: flex;
+  align-items: center;
+  margin: 20px 0;
+}
+
+.title {
+  font-size: 20px;
+  color: #e0e0e0;
+  margin: 20px 0;
+  width: 95%;
+}
+
+.username {
+  color: #828282;
+}
+
+.image {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  margin-right: 20px;
+}
