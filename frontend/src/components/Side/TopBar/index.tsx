@@ -8,25 +8,28 @@ import styles from './styles.module.scss';
 
 type Props = {
   arrowClick: () => void;
-  title: string;
-  iconIsVisible: boolean;
+  plusClick: () => void;
+  isInChannel: boolean;
 };
 
 const TopBar: React.FC<Props> = props => {
   return (
     <div className={styles.container}>
-      <div className={styles.wrapper}>
-        {props.iconIsVisible ? (
-          <IconButton className={styles.menuButton} onClick={props.arrowClick}>
-            <ArrowBackIosIcon className={styles.menu} />
+      {props.isInChannel ? (
+        <div className={styles.wrapperInChannel}>
+          <IconButton className={styles.arrowButton} onClick={props.arrowClick}>
+            <ArrowBackIosIcon className={styles.arrow} />
           </IconButton>
-        ) : (
-          <IconButton className={styles.addButton} onClick={props.arrowClick}>
+          <h2 className={styles.title}>All channels</h2>
+        </div>
+      ) : (
+        <div className={styles.wrapperOutChannel}>
+          <h2 className={styles.title}>Channels</h2>
+          <IconButton className={styles.addButton} onClick={props.plusClick}>
             <AddIcon className={styles.add} />
           </IconButton>
-        )}
-        <h2 className={styles.title}>{props.title}</h2>
-      </div>
+        </div>
+      )}
     </div>
   );
 };
