@@ -1,0 +1,26 @@
+.container {
+  padding: 8px;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  width: 95%;
+  background-color: #3c393f;
+  align-self: center;
+  border-radius: 8px;
+}
+
+.input {
+  margin-left: 5px;
+  flex: 1;
+  color: #e0e0e0 !important;
+}
+
+.iconButton {
+  padding: 8px;
+  background-color: #2f80ed !important;
+  border-radius: 8px !important;
+}
+
+.send {
+  color: #fff;
+}
