@@ -12,7 +12,7 @@ const AppView: React.FC<Props> = props => {
     <div className={styles.container}>
       <div className={styles.side}></div>
       <div className={styles.main}>
-        <TopBar />
+        <TopBar title="Front-End" menuClick={() => console.log('Clicked')} />
         <div>PlaceHolder</div>
         <MsgInput />
       </div>

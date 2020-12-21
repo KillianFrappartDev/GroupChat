@@ -4,8 +4,25 @@
   box-shadow: 0px 4px 4px rgba($color: #000, $alpha: 0.2);
   display: flex;
   align-items: center;
+  justify-content: center;
+}
+
+.wrapper {
+  width: 95%;
+  display: flex;
+  align-items: center;
 }
 
 .title {
-  margin-left: 2.5%;
+}
+
+.iconButton {
+  display: none !important;
+  @media (max-width: 767px) {
+    display: inline-block !important;
+  }
+}
+
+.menu {
+  color: #e0e0e0;
 }
