@@ -10,7 +10,7 @@ type Props = {};
 const MsgInput: React.FC<Props> = props => {
   return (
     <div className={styles.container}>
-      <InputBase className={styles.input} placeholder="Write here..." />
+      <InputBase className={styles.input} multiline placeholder="Write here..." />
       <IconButton className={styles.iconButton}>
         <SendIcon className={styles.send} />
       </IconButton>
