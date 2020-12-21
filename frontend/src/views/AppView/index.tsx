@@ -9,7 +9,8 @@ import BottomBar from '../../components/Side/BottomBar/index';
 import Search from '../../components/Side/Search/index';
 import Groups from '../../components/Side/Groups/index';
 import GroupInfo from '../../components/Side/GroupInfo/index';
-import { DUMMY_MESSAGES, DUMMY_GROUPS } from '../../utils/dummy-data';
+import Members from '../../components/Side/Members/index';
+import { DUMMY_MESSAGES, DUMMY_GROUPS, DUMMY_MEMBERS } from '../../utils/dummy-data';
 import styles from './styles.module.scss';
 
 type Props = {};
@@ -25,6 +26,7 @@ const AppView: React.FC<Props> = props => {
         />
         <div className={styles.sideContent}>
           <GroupInfo />
+          <Members members={DUMMY_MEMBERS} />
           {/* <Search />
           <Groups groups={DUMMY_GROUPS} /> */}
         </div>
