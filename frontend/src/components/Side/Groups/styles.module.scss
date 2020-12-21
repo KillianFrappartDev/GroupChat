@@ -1,0 +1,26 @@
+.container {
+  overflow-y: scroll;
+  display: flex;
+  justify-content: center;
+}
+
+.wrapper {
+  width: 95%;
+}
+
+.group {
+  display: flex;
+  align-items: center;
+  margin: 20px 0;
+}
+
+.tag {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #252329;
+  border-radius: 10px;
+  margin-right: 15px;
+}
