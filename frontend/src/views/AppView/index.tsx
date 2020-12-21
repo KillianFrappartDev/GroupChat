@@ -7,6 +7,7 @@ import MainTopBar from '../../components/Main/TopBar/index';
 import SideTopBar from '../../components/Side/TopBar/index';
 import BottomBar from '../../components/Side/BottomBar/index';
 import Search from '../../components/Side/Search/index';
+import Groups from '../../components/Side/Groups/index';
 import { DUMMY_MESSAGES } from '../../utils/dummy-data';
 import styles from './styles.module.scss';
 
@@ -23,6 +24,7 @@ const AppView: React.FC<Props> = props => {
         />
         <div className={styles.sideContent}>
           <Search />
+          <Groups />
         </div>
         <BottomBar exitClick={() => console.log('Clicked')} />
       </div>
