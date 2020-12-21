@@ -18,6 +18,7 @@
   .side {
     flex: 1;
     background-color: #19161b;
+    @include columnLayout;
   }
 
   @media screen and (max-width: 767px) {

@@ -6,7 +6,7 @@ import styles from './styles.module.scss';
 type Props = {};
 
 const BottomBar: React.FC<Props> = props => {
-  return <h1>BottomBar</h1>;
+  return <div className={styles.container}></div>;
 };
 
 export default BottomBar;
