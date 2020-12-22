@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 
 // Local Imports
 import logo from '../../../assets/cropped.png';
@@ -9,6 +10,8 @@ import styles from './styles.module.scss';
 type Props = {};
 
 const Welcome: React.FC<Props> = props => {
+  const dispatch = useDispatch();
+
   return (
     <div className={styles.container}>
       <img className={styles.logo} alt="GroupChat Logo" src={logo} />
@@ -18,7 +21,9 @@ const Welcome: React.FC<Props> = props => {
       <Link to="/signup">
         <CustomButton isPurple={true} title="Signup" small={false} />
       </Link>
-      <p className={styles.guest}>Continue as guest</p>
+      <p className={styles.guest} onClick={() => dispatch({ type: 'GUEST' })}>
+        Continue as guest
+      </p>
     </div>
   );
 };
