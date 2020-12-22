@@ -6,10 +6,14 @@
   align-items: center;
   justify-content: center;
   background-color: #252329;
+  overflow: hidden;
 }
 
 .logo {
   width: 350px;
+  @media screen and (max-width: 350px) {
+    width: 300px;
+  }
 }
 
 .guest {
