@@ -38,7 +38,7 @@ const Login: React.FC<Props> = props => {
             }
             label="Remember me"
           />
-          <input className={styles.submit} type="submit" />
+          <input className={styles.submit} type="submit" value="Login" />
         </form>
         <Link to="/signup">
           <p className={styles.guest}>Don't have an account? Sign Up</p>
