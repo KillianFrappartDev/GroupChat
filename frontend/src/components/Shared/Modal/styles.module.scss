@@ -12,8 +12,16 @@
   left: 50%;
   transform: translate(-50%, -50%);
   width: 600px;
-  height: 400px;
   background-color: #120f13;
   border-radius: 10px;
   padding: 30px;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+}
+
+.input {
+  margin: 20px 0;
 }

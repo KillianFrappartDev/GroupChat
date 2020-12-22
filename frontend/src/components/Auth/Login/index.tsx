@@ -35,7 +35,7 @@ const Login: React.FC<Props> = props => {
             }
             label="Remember me"
           />
-          <CustomButton isPurple title="Signup" />
+          <CustomButton isPurple title="Signup" small={false} />
         </form>
         <Link to="/signup">
           <p className={styles.guest}>Don't have an account? Sign Up</p>

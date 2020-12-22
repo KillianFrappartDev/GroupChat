@@ -1,5 +1,5 @@
-.login,
-.signup {
+.purple,
+.black {
   width: 350px;
   height: 50px;
   border-style: none;
@@ -9,7 +9,7 @@
   }
 }
 
-.login {
+.black {
   background-color: #19161b;
   color: #e0e0e0;
   &:hover {
@@ -18,7 +18,8 @@
   }
 }
 
-.signup {
+.purple,
+.smallPurple {
   background-color: rgba($color: #000000, $alpha: 0);
   color: rgb(129, 3, 255);
   color: linear-gradient(90deg, rgba(129, 3, 255, 1) 0%, rgba(195, 17, 255, 1) 100%);
@@ -28,5 +29,16 @@
     background-color: rgb(129, 3, 255);
     background-color: linear-gradient(90deg, rgba(129, 3, 255, 1) 0%, rgba(195, 17, 255, 1) 100%);
     color: #252329;
+  }
+}
+
+.smallPurple {
+  width: 150px;
+  height: 40px;
+  border-style: none;
+  font-size: 14px;
+  margin: 20px 0;
+  &:hover {
+    cursor: pointer;
   }
 }
