@@ -1,33 +1,24 @@
-.container {
-  background-color: #252329;
-  width: 100%;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-.logo {
-  width: 150px;
-  margin-bottom: 30px;
-}
-
-.form {
-  display: flex;
-  flex-direction: column;
-}
-
-.input {
-  width: 350px;
-  height: 80px;
-}
-
-.submit {
+.login,
+.signup {
   width: 350px;
   height: 50px;
   border-style: none;
   margin: 20px 0;
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.login {
+  background-color: #19161b;
+  color: #e0e0e0;
+  &:hover {
+    background-color: #e0e0e0;
+    color: #19161b;
+  }
+}
+
+.signup {
   background-color: rgba($color: #000000, $alpha: 0);
   color: rgb(129, 3, 255);
   color: linear-gradient(90deg, rgba(129, 3, 255, 1) 0%, rgba(195, 17, 255, 1) 100%);
@@ -37,15 +28,5 @@
     background-color: rgb(129, 3, 255);
     background-color: linear-gradient(90deg, rgba(129, 3, 255, 1) 0%, rgba(195, 17, 255, 1) 100%);
     color: #252329;
-    cursor: pointer;
-  }
-}
-
-.guest {
-  color: #006ebd;
-  font-size: 12px;
-  margin-top: 20px;
-  &:hover {
-    cursor: pointer;
   }
 }
