@@ -24,6 +24,9 @@ type UserAction = {
       case 'LOGOUT':
         return {...state, isLogged: false, username: null, image: null, token: null}
 
+        case 'GUEST':
+          return {...state, isLogged: true, username: "Guest", image: null, token: null}
+
       default:
         return state;
     }
