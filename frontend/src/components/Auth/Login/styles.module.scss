@@ -1,0 +1,24 @@
+.container {
+  background-color: #252329;
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo {
+  width: 150px;
+  margin-bottom: 30px;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+}
+
+.input {
+  width: 350px;
+  height: 80px;
+}
