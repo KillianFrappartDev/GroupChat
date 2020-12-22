@@ -13,10 +13,10 @@ const Welcome: React.FC<Props> = props => {
     <div className={styles.container}>
       <img className={styles.logo} alt="GroupChat Logo" src={logo} />
       <Link to="/login">
-        <CustomButton isPurple={false} title="Login" />
+        <CustomButton isPurple={false} title="Login" small={false} />
       </Link>
       <Link to="/signup">
-        <CustomButton isPurple={true} title="Signup" />
+        <CustomButton isPurple={true} title="Signup" small={false} />
       </Link>
       <p className={styles.guest}>Continue as guest</p>
     </div>
