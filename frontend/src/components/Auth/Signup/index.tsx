@@ -5,19 +5,14 @@ import { Link } from 'react-router-dom';
 
 // Local Imports
 import logo from '../../../assets/gc-logo-symbol-nobg.png';
+import CustomButton from '../../Shared/CustomButton/index';
 import styles from './styles.module.scss';
 
 type Props = {};
 
 const darkTheme = createMuiTheme({
   palette: {
-    type: 'dark',
-    background: {
-      default: '#252329'
-    },
-    secondary: {
-      main: '#120F13'
-    }
+    type: 'dark'
   }
 });
 
@@ -27,7 +22,9 @@ const Signup: React.FC<Props> = props => {
   return (
     <ThemeProvider theme={darkTheme}>
       <div className={styles.container}>
-        <img className={styles.logo} alt="logo" src={logo} />
+        <Link to="/">
+          <img className={styles.logo} alt="logo" src={logo} />
+        </Link>
         <form className={styles.form}>
           <TextField className={styles.input} id="username" label="Username" variant="outlined" />
           <TextField className={styles.input} id="email" label="Email" variant="outlined" />
@@ -39,7 +36,7 @@ const Signup: React.FC<Props> = props => {
             }
             label="Remember me"
           />
-          <input className={styles.submit} type="submit" value="Signup" />
+          <CustomButton isPurple title="Signup" />
         </form>
         <Link to="/login">
           <p className={styles.guest}>Already a member ? Login</p>
