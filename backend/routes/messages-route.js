@@ -1,7 +1,11 @@
 const express = require('express');
 
+// Local Imports
+const controllers = require('../controllers/messages-controllers');
+
 const router = express.Router();
 
-// Routes...
+router.get('/:gid', controllers.fetchMessages);
+router.post('/:gid', controllers.sendMessage);
 
 module.exports = router;
