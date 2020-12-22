@@ -9,6 +9,17 @@
   }
 }
 
+.smallPurple {
+  width: 150px;
+  height: 40px;
+  border-style: none;
+  font-size: 14px;
+  margin: 20px 0;
+  &:hover {
+    cursor: pointer;
+  }
+}
+
 .black {
   background-color: #19161b;
   color: #e0e0e0;
@@ -33,12 +44,5 @@
 }
 
 .smallPurple {
-  width: 150px;
-  height: 40px;
-  border-style: none;
-  font-size: 14px;
-  margin: 20px 0;
-  &:hover {
-    cursor: pointer;
-  }
+  border-width: 1px;
 }

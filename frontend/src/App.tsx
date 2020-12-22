@@ -6,12 +6,7 @@ import AuthView from './views/AuthView/index';
 import Modal from './components/Shared/Modal/index';
 
 const App: React.FC = () => {
-  return (
-    <>
-      <AppView />
-      <Modal backClick={() => console.log('Clicked')} />
-    </>
-  );
+  return <Modal backClick={() => console.log('Clicked')} />;
 };
 
 export default App;
