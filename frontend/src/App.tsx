@@ -5,7 +5,7 @@ import AppView from './views/AppView/index';
 import AuthView from './views/AuthView/index';
 
 const App: React.FC = () => {
-  return <AppView />;
+  return <AuthView />;
 };
 
 export default App;
