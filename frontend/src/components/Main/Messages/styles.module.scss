@@ -23,6 +23,10 @@
   width: 65px;
   height: 65px;
   border-radius: 50%;
+  @media screen and (max-width: 350px) {
+    width: 50px;
+    height: 50px;
+  }
 }
 
 .textBox {
@@ -32,9 +36,15 @@
 .username {
   color: #828282;
   font-size: 18px;
+  @media screen and (max-width: 350px) {
+    font-size: 15px;
+  }
 }
 
 .message {
   color: #e0e0e0;
   font-size: 14px;
+  @media screen and (max-width: 350px) {
+    font-size: 12px;
+  }
 }

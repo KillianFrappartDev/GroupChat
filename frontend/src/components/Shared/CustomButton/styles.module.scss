@@ -7,6 +7,10 @@
   &:hover {
     cursor: pointer;
   }
+
+  @media screen and (max-width: 350px) {
+    width: 300px;
+  }
 }
 
 .smallPurple {
@@ -38,7 +42,8 @@
   border-color: linear-gradient(90deg, rgba(129, 3, 255, 1) 0%, rgba(195, 17, 255, 1) 100%);
   &:hover {
     background-color: rgb(129, 3, 255);
-    background-color: linear-gradient(90deg, rgba(129, 3, 255, 1) 0%, rgba(195, 17, 255, 1) 100%);
+    background: linear-gradient(90deg, rgba(129, 3, 255, 1) 0%, rgba(224, 2, 255, 1) 100%) !important;
+    border-width: 0px;
     color: #252329;
   }
 }

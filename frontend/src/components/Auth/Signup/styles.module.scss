@@ -6,6 +6,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  overflow: hidden;
 }
 
 .logo {
@@ -21,6 +22,9 @@
 .input {
   width: 350px;
   height: 80px;
+  @media screen and (max-width: 350px) {
+    width: 300px;
+  }
 }
 
 .submit {
@@ -35,7 +39,7 @@
   border-color: linear-gradient(90deg, rgba(129, 3, 255, 1) 0%, rgba(195, 17, 255, 1) 100%);
   &:hover {
     background-color: rgb(129, 3, 255);
-    background-color: linear-gradient(90deg, rgba(129, 3, 255, 1) 0%, rgba(195, 17, 255, 1) 100%);
+    background: linear-gradient(90deg, rgba(129, 3, 255, 1) 0%, rgba(224, 2, 255, 1) 100%) !important;
     color: #252329;
     cursor: pointer;
   }
