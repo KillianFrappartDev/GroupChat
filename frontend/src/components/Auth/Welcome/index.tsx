@@ -16,10 +16,10 @@ const Welcome: React.FC<Props> = props => {
     <div className={styles.container}>
       <img className={styles.logo} alt="GroupChat Logo" src={logo} />
       <Link to="/login">
-        <CustomButton isPurple={false} title="Login" small={false} />
+        <CustomButton onClick={() => console.log('Clicked')} isPurple={false} title="Login" small={false} />
       </Link>
       <Link to="/signup">
-        <CustomButton isPurple={true} title="Signup" small={false} />
+        <CustomButton onClick={() => console.log('Clicked')} isPurple={true} title="Signup" small={false} />
       </Link>
       <p className={styles.guest} onClick={() => dispatch({ type: 'GUEST' })}>
         Continue as guest

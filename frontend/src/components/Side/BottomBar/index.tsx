@@ -16,7 +16,7 @@ const BottomBar: React.FC<Props> = props => {
         <div className={styles.userBox}>
           <img
             className={styles.image}
-            alt="User image"
+            alt="User"
             src="https://images.pexels.com/photos/1220757/pexels-photo-1220757.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260"
           />
           <p className={styles.username}>John Smith</p>
