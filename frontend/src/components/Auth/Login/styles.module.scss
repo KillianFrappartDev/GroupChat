@@ -22,3 +22,30 @@
   width: 350px;
   height: 80px;
 }
+
+.submit {
+  width: 350px;
+  height: 50px;
+  border-style: none;
+  margin: 20px 0;
+  background-color: rgba($color: #000000, $alpha: 0);
+  color: rgb(129, 3, 255);
+  color: linear-gradient(90deg, rgba(129, 3, 255, 1) 0%, rgba(195, 17, 255, 1) 100%);
+  border: solid 2px rgb(129, 3, 255);
+  border-color: linear-gradient(90deg, rgba(129, 3, 255, 1) 0%, rgba(195, 17, 255, 1) 100%);
+  &:hover {
+    background-color: rgb(129, 3, 255);
+    background-color: linear-gradient(90deg, rgba(129, 3, 255, 1) 0%, rgba(195, 17, 255, 1) 100%);
+    color: #252329;
+    cursor: pointer;
+  }
+}
+
+.guest {
+  color: #006ebd;
+  font-size: 12px;
+  margin-top: 20px;
+  &:hover {
+    cursor: pointer;
+  }
+}

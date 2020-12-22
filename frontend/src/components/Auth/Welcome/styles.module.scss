@@ -9,12 +9,12 @@
 }
 
 .logo {
-  width: 300px;
+  width: 350px;
 }
 
 .login,
 .signup {
-  width: 250px;
+  width: 350px;
   height: 50px;
   border-style: none;
   margin: 20px 0;
@@ -48,7 +48,6 @@
 .guest {
   color: #006ebd;
   font-size: 12px;
-  text-decoration: underline;
   margin-top: 20px;
   &:hover {
     cursor: pointer;
