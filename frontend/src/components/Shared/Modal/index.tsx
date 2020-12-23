@@ -32,7 +32,7 @@ const Modal: React.FC<Props> = props => {
               variant="outlined"
               multiline
             />
-            <CustomButton isPurple title="Create" small />
+            <CustomButton onClick={() => console.log('Clicked')} isPurple title="Create" small />
           </form>
         </ThemeProvider>
       </div>

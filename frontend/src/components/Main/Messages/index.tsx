@@ -12,7 +12,7 @@ type PropsMessage = {
 const Message: React.FC<PropsMessage> = props => {
   return (
     <div className={styles.messageContainer}>
-      <img className={styles.image} alt="User image" src={props.image} />
+      <img className={styles.image} alt="User" src={props.image} />
       <div className={styles.textBox}>
         <p className={styles.username}>{props.username}</p>
         <p className={styles.message}>{props.text}</p>

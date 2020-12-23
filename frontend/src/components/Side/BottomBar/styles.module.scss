@@ -33,4 +33,8 @@
 
 .exit {
   color: #e0e0e0;
+  &:hover {
+    color: rgb(129, 3, 255);
+    color: linear-gradient(90deg, rgba(129, 3, 255, 1) 0%, rgba(195, 17, 255, 1) 100%);
+  }
 }

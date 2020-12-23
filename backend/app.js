@@ -25,7 +25,7 @@ app.use((error, req, res, next) => {
 
 // Connect to DB && Start server
 mongoose
-  .connect(process.env.DB_URL, { useNewUrlParser: true, useUnifiedTopology: true })
+  .connect(process.env.DB_URL, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true })
   .then(() => {
     app.listen(process.env.PORT || 5000, () =>
       console.log(`Server up and running on port ${process.env.PORT || 5000}!`)

@@ -7,11 +7,22 @@ type Props = {
   isPurple: boolean;
   title: string;
   small: boolean;
+  onClick: () => void;
 };
 
 const CustomButton: React.FC<Props> = props => {
-  if (!props.isPurple) return <button className={styles.black}>{props.title}</button>;
-  else return <button className={props.small ? styles.smallPurple : styles.purple}>{props.title}</button>;
+  if (!props.isPurple)
+    return (
+      <button onClick={props.onClick} className={styles.black}>
+        {props.title}
+      </button>
+    );
+  else
+    return (
+      <button onClick={props.onClick} className={props.small ? styles.smallPurple : styles.purple}>
+        {props.title}
+      </button>
+    );
 };
 
 export default CustomButton;
