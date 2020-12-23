@@ -3,6 +3,8 @@ require('dotenv').config();
 const cors = require('cors');
 const mongoose = require('mongoose');
 const express = require('express');
+const http = require('http');
+const socketIo = require('socket.io');
 
 // Local Imports
 const usersRoute = require('./routes/users-route');
@@ -23,11 +25,19 @@ app.use((error, req, res, next) => {
   res.json({ message: error.message || 'An unknown error occured.' });
 });
 
+const server = http.createServer(app);
+
+const io = socketIo(server);
+
+io.on('connection', socket => {
+  console.log('New client connected');
+});
+
 // Connect to DB && Start server
 mongoose
   .connect(process.env.DB_URL, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true })
   .then(() => {
-    app.listen(process.env.PORT || 5000, () =>
+    server.listen(process.env.PORT || 5000, () =>
       console.log(`Server up and running on port ${process.env.PORT || 5000}!`)
     );
   })

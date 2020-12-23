@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import axios from 'axios';
+import socketIOClient from 'socket.io-client';
 
 // Local Imports
 import Messages from '../../components/Main/Messages/index';
@@ -34,6 +35,7 @@ const AppView: React.FC<Props> = props => {
 
   useEffect(() => {
     fetchGroups();
+    const socket = socketIOClient('http://localhost:5000', { transports: ['websocket'] });
   }, []);
 
   const logoutHandler = () => {
