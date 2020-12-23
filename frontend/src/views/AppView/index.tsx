@@ -29,6 +29,7 @@ const AppView: React.FC<Props> = props => {
   const [inChannel, setInChannel] = useState(true);
   const [modal, setModal] = useState(false);
   const [groups, setGroups] = useState([]);
+  const [displayedGroups, setDisplayedGroups] = useState([]);
   const [currentGroup, setCurrentGroup] = useState({ id: '0', title: '', description: '' });
 
   useEffect(() => {
@@ -46,6 +47,10 @@ const AppView: React.FC<Props> = props => {
     setInChannel(true);
   };
 
+  const searchHandler = (grps: any) => {
+    setDisplayedGroups(grps);
+  };
+
   // Async Requests
   const createGroup = async (title: string, description: string) => {
     let response;
@@ -59,6 +64,7 @@ const AppView: React.FC<Props> = props => {
       return;
     }
     setModal(false);
+    fetchGroups();
   };
 
   const fetchGroups = async () => {
@@ -71,6 +77,7 @@ const AppView: React.FC<Props> = props => {
     }
     if (!response) return;
     setGroups(response.data.groups);
+    setDisplayedGroups(response.data.groups);
     setCurrentGroup(response.data.groups[0]);
   };
 
@@ -85,8 +92,8 @@ const AppView: React.FC<Props> = props => {
   } else {
     sideContent = (
       <div className={styles.sideContent}>
-        <Search />
-        <Groups groups={groups} groupClick={id => groupHandler(id)} />
+        <Search groups={groups} update={filteredGroups => searchHandler(filteredGroups)} />
+        <Groups groups={displayedGroups} groupClick={id => groupHandler(id)} />
       </div>
     );
   }
@@ -94,12 +101,19 @@ const AppView: React.FC<Props> = props => {
   return (
     <div className={styles.container}>
       <div className={styles.side}>
-        <SideTopBar inChannel={inChannel} arrowClick={() => setInChannel(false)} plusClick={() => setModal(true)} />
+        <SideTopBar
+          inChannel={inChannel}
+          arrowClick={() => {
+            setInChannel(false);
+            setDisplayedGroups(groups);
+          }}
+          plusClick={() => setModal(true)}
+        />
         {sideContent}
         <BottomBar exitClick={logoutHandler} />
       </div>
       <div className={styles.main}>
-        <MainTopBar title="Welcome 👋" menuClick={() => console.log('Clicked')} />
+        <MainTopBar title={currentGroup.title} menuClick={() => console.log('Clicked')} />
         <Messages messages={DUMMY_MESSAGES} />
         <MsgInput />
       </div>
