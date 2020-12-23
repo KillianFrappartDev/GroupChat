@@ -4,6 +4,7 @@ const generator = new AvatarGenerator();
 
 // Local Imports
 const User = require('../models/user');
+const Guest = require('../models/guest');
 const { createToken, checkToken } = require('../utils/token');
 
 const findUserWithEmail = async email => {
@@ -70,5 +71,27 @@ const signup = async (req, res, next) => {
   });
 };
 
+const guest = async (req, res, next) => {
+  const randomUsername = `Guest${Math.floor(Math.random() * 99999) + 1}`;
+  const defaultImage =
+    'https://images.unsplash.com/photo-1511367461989-f85a21fda167?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=3578&q=80';
+
+  // Create Guest
+  const newGuest = new Guest({ username: randomUsername, image: defaultImage });
+  try {
+    await newGuest.save();
+  } catch (error) {
+    return next(new Error('[ERROR][USERS] Could not save guest in DB: ' + error));
+  }
+
+  // Send response
+  res.json({
+    message: '[USER][GUEST] Access granted.',
+    access: true,
+    user: { id: newGuest.id, username: newGuest.username, image: newGuest.image }
+  });
+};
+
 exports.login = login;
 exports.signup = signup;
+exports.guest = guest;

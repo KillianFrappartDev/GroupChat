@@ -27,7 +27,7 @@ type UserAction = {
         return {...state, isLogged: false, username: null, image: null, token: null, id: null}
 
         case 'GUEST':
-          return {...state, isLogged: true, username: "Guest", image: null, token: null, id: null}
+          return {...state, isLogged: true, username: action.payload.username, image: action.payload.image, token: null, id: action.payload.id}
 
       default:
         return state;
