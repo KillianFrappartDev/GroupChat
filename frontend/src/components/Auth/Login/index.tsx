@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { TextField, FormControlLabel, Checkbox } from '@material-ui/core';
-import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import { Link } from 'react-router-dom';
 
 // Local Imports
@@ -10,12 +9,6 @@ import CustomButton from '../../Shared/CustomButton/index';
 import styles from './styles.module.scss';
 
 type Props = {};
-
-const darkTheme = createMuiTheme({
-  palette: {
-    type: 'dark'
-  }
-});
 
 const Login: React.FC<Props> = props => {
   const [isValid, setIsValid] = useState(true);
@@ -79,49 +72,47 @@ const Login: React.FC<Props> = props => {
   };
 
   return (
-    <ThemeProvider theme={darkTheme}>
-      <div className={styles.container}>
-        <Link to="/">
-          <img className={styles.logo} alt="logo" src={logo} />
-        </Link>
-        <form className={styles.form} onSubmit={e => e.preventDefault()}>
-          <TextField
-            className={styles.input}
-            id="email"
-            label="Email"
-            variant="outlined"
-            type="text"
-            error={emailError}
-            value={email}
-            onChange={e => emailHandler(e)}
-            helperText={emailHelper}
-          />
-          <TextField
-            className={styles.input}
-            id="password"
-            label="Password"
-            variant="outlined"
-            type="password"
-            value={password}
-            error={passwordError}
-            onChange={e => passwordHandler(e)}
-            helperText={passwordHelper}
-          />
-          <FormControlLabel
-            className={styles.check}
-            control={
-              <Checkbox checked={checked} onChange={() => setChecked(prev => !prev)} name="checked" color="primary" />
-            }
-            label="Remember me"
-          />
-          <CustomButton onClick={() => submitHandler(checked, email, password)} isPurple title="Login" small={false} />
-          {!isValid && <p className={styles.error}>Invalid entries.</p>}
-        </form>
-        <Link to="/signup">
-          <p className={styles.guest}>Don't have an account? Sign Up</p>
-        </Link>
-      </div>
-    </ThemeProvider>
+    <div className={styles.container}>
+      <Link to="/">
+        <img className={styles.logo} alt="logo" src={logo} />
+      </Link>
+      <form className={styles.form} onSubmit={e => e.preventDefault()}>
+        <TextField
+          className={styles.input}
+          id="email"
+          label="Email"
+          variant="outlined"
+          type="text"
+          error={emailError}
+          value={email}
+          onChange={e => emailHandler(e)}
+          helperText={emailHelper}
+        />
+        <TextField
+          className={styles.input}
+          id="password"
+          label="Password"
+          variant="outlined"
+          type="password"
+          value={password}
+          error={passwordError}
+          onChange={e => passwordHandler(e)}
+          helperText={passwordHelper}
+        />
+        <FormControlLabel
+          className={styles.check}
+          control={
+            <Checkbox checked={checked} onChange={() => setChecked(prev => !prev)} name="checked" color="primary" />
+          }
+          label="Remember me"
+        />
+        <CustomButton onClick={() => submitHandler(checked, email, password)} isPurple title="Login" small={false} />
+        {!isValid && <p className={styles.error}>Invalid entries.</p>}
+      </form>
+      <Link to="/signup">
+        <p className={styles.guest}>Don't have an account? Sign Up</p>
+      </Link>
+    </div>
   );
 };
 
