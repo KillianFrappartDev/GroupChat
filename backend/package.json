@@ -16,7 +16,8 @@
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.11.8",
-    "mongoose-unique-validator": "^2.0.3"
+    "mongoose-unique-validator": "^2.0.3",
+    "random-avatar-generator": "^2.0.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.6"
