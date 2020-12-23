@@ -1,7 +1,7 @@
 import React from 'react';
 import { IconButton } from '@material-ui/core';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 // Local Imports
 import styles from './styles.module.scss';
@@ -17,12 +17,6 @@ interface IRootState {
 
 const BottomBar: React.FC<Props> = props => {
   const { username, image } = useSelector((state: IRootState) => state);
-  const dispatch = useDispatch();
-
-  const logoutHandler = () => {
-    localStorage.removeItem('userData');
-    dispatch({ type: 'LOGOUT' });
-  };
 
   return (
     <div className={styles.container}>
@@ -32,7 +26,7 @@ const BottomBar: React.FC<Props> = props => {
           <p className={styles.username}>{username}</p>
         </div>
         <IconButton className={styles.exitButton} onClick={props.exitClick}>
-          <ExitToAppIcon className={styles.exit} onClick={logoutHandler} />
+          <ExitToAppIcon className={styles.exit} />
         </IconButton>
       </div>
     </div>
