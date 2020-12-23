@@ -2,6 +2,7 @@
 const Group = require('../models/group');
 
 const fetchGroups = async (req, res, next) => {
+  // Fetch all groups
   let groups;
   try {
     groups = await Group.find();
@@ -9,11 +10,23 @@ const fetchGroups = async (req, res, next) => {
     return next(new Error('[ERROR][GROUPS] Could not fetch groups: ' + error));
   }
 
-  res.json({ message: 'Groups Fetched', groups });
+  // Send Response
+  res.json({ message: 'Groups Fetched!', groups });
 };
 
 const fetchGroupData = async (req, res, next) => {
-  res.json({ message: 'fetchGroupData' });
+  const { id } = req.body;
+
+  // Fetch group by id and populate members.
+  let group;
+  try {
+    group = await Group.findById(id).populate('members');
+  } catch (error) {
+    return next(new Error('[ERROR][GROUPS] Could not fetch groups by id: ' + error));
+  }
+
+  // Send Response
+  res.json({ message: 'Group fetched!', group });
 };
 
 const createGroup = async (req, res, next) => {
