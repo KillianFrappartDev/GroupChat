@@ -13,7 +13,10 @@ const createToken = async id => {
   return token;
 };
 
-const checkToken = () => {};
+const checkToken = async (id, token) => {
+  const decodedToken = await jwt.verify(token, process.env.JWT_SECRET);
+  return decodedToken.data == id;
+};
 
 exports.createToken = createToken;
 exports.checkToken = checkToken;

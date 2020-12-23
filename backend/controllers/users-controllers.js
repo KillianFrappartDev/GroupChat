@@ -22,11 +22,17 @@ const login = async (req, res, next) => {
 
   // Find User with email
   const user = await findUserWithEmail(email);
-  if (!user) res.json({ message: '[USER][LOGIN] Access denied, incorrect Email.', access: false });
+  if (!user) {
+    res.json({ message: '[USER][LOGIN] Access denied, incorrect Email.', access: false });
+    return next();
+  }
 
   // Decrypt password & Check if password is valid
   const decryptedPassword = await bcrypt.compare(password, user.password);
-  if (!decryptedPassword) res.json({ message: '[USER][LOGIN] Access denied, incorrect Password.', access: false });
+  if (!decryptedPassword) {
+    res.json({ message: '[USER][LOGIN] Access denied, incorrect Password.', access: false });
+    return next();
+  }
 
   // If Checked is true, create token
   let token = null;
@@ -46,8 +52,10 @@ const signup = async (req, res, next) => {
 
   // Check if user with this email already exists
   const existingUser = await findUserWithEmail(email);
-  if (existingUser) res.json({ message: '[USER][SIGNUP] Access denied, email already used.', access: false });
-
+  if (existingUser) {
+    res.json({ message: '[USER][SIGNUP] Access denied, email already used.', access: false });
+    return next();
+  }
   // Encrypt password
   const hashedPassword = await bcrypt.hash(password, 8);
 
@@ -73,8 +81,7 @@ const signup = async (req, res, next) => {
 
 const guest = async (req, res, next) => {
   const randomUsername = `Guest${Math.floor(Math.random() * 99999) + 1}`;
-  const defaultImage =
-    'https://images.unsplash.com/photo-1511367461989-f85a21fda167?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=3578&q=80';
+  const defaultImage = 'https://t4.ftcdn.net/jpg/00/64/67/63/360_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg';
 
   // Create Guest
   const newGuest = new Guest({ username: randomUsername, image: defaultImage });
@@ -92,6 +99,32 @@ const guest = async (req, res, next) => {
   });
 };
 
+const verify = async (req, res, next) => {
+  const { id, token } = req.body;
+
+  // Find user with id
+  let user;
+  try {
+    user = await User.findById(id);
+  } catch (error) {
+    return next(new Error('[ERROR][USERS] Could not find user by id: ' + error));
+  }
+
+  // Verify Token
+  const tokenIsValid = await checkToken(id, token);
+  if (!tokenIsValid) {
+    res.json({ message: '[USER][VERIFY] Access denied, invalid token.', access: false });
+    return next();
+  }
+  // Send response
+  res.json({
+    message: '[USER][LOGIN] Access granted.',
+    access: true,
+    user: { id: user.id, username: user.username, image: user.image, token }
+  });
+};
+
 exports.login = login;
 exports.signup = signup;
 exports.guest = guest;
+exports.verify = verify;

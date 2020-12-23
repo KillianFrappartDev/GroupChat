@@ -37,6 +37,9 @@ const Login: React.FC<Props> = props => {
       return;
     }
     if (!response.data.access) return;
+    if (checked) {
+      localStorage.setItem('userData', JSON.stringify({ id: response.data.user.id, token: response.data.user.token }));
+    }
     dispatch({ type: 'LOGIN', payload: { ...response.data.user } });
   };
 
