@@ -11,7 +11,7 @@ const findUserWithEmail = async email => {
   try {
     user = await User.findOne({ email });
   } catch (error) {
-    return next(new Error('[ERROR][USERS] Could not find user with email'));
+    return next(new Error('[ERROR][USERS] Could not find user with email: ', +error));
   }
   return user;
 };
@@ -20,7 +20,7 @@ const login = async (req, res, next) => {
   const { checked, email, password } = req.body;
 
   // Find User with email
-  const user = findUserWithEmail(email);
+  const user = await findUserWithEmail(email);
   if (!user) res.json({ message: '[USER][LOGIN] Access denied, incorrect Email.', access: false });
 
   // Decrypt password & Check if password is valid
@@ -55,12 +55,12 @@ const signup = async (req, res, next) => {
   try {
     await newUser.save();
   } catch (error) {
-    return next(new Error('[ERROR][USERS] Could not save user in DB'));
+    return next(new Error('[ERROR][USERS] Could not save user in DB: ' + error));
   }
 
   // If Checked is true, create token
   let token = null;
-  if (checked) token = await createToken(user.id);
+  if (checked) token = await createToken(newUser.id);
 
   // Send response
   res.json({

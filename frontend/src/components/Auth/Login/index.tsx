@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { TextField, FormControlLabel, Checkbox } from '@material-ui/core';
 import { Link } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 
 // Local Imports
 import logo from '../../../assets/gc-logo-symbol-nobg.png';
@@ -11,6 +12,8 @@ import styles from './styles.module.scss';
 type Props = {};
 
 const Login: React.FC<Props> = props => {
+  const dispatch = useDispatch();
+
   const [isValid, setIsValid] = useState(true);
   const [checked, setChecked] = useState(false);
   const [email, setEmail] = useState('');
@@ -24,12 +27,17 @@ const Login: React.FC<Props> = props => {
   const loginSubmit = async (checked: boolean, email: string, password: string) => {
     let response;
     try {
-      response = await axios.post(`${process.env.REACT_APP_SERVER_URL}/users/login`, { checked, email, password });
+      response = await axios.post(`${process.env.REACT_APP_SERVER_URL}/users/login`, {
+        checked,
+        email: email.toLowerCase(),
+        password: password.toLowerCase()
+      });
     } catch (error) {
       console.log('[ERROR][AUTH][LOGIN]: ', error);
       return;
     }
-    console.log(response);
+    if (!response.data.access) return;
+    dispatch({ type: 'LOGIN', payload: { ...response.data.user } });
   };
 
   // Input Validation

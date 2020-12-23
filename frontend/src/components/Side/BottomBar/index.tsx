@@ -1,6 +1,7 @@
 import React from 'react';
 import { IconButton } from '@material-ui/core';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import { useDispatch } from 'react-redux';
 
 // Local Imports
 import styles from './styles.module.scss';
@@ -10,6 +11,8 @@ type Props = {
 };
 
 const BottomBar: React.FC<Props> = props => {
+  const dispatch = useDispatch();
+
   return (
     <div className={styles.container}>
       <div className={styles.wrapper}>
@@ -22,7 +25,7 @@ const BottomBar: React.FC<Props> = props => {
           <p className={styles.username}>John Smith</p>
         </div>
         <IconButton className={styles.exitButton} onClick={props.exitClick}>
-          <ExitToAppIcon className={styles.exit} />
+          <ExitToAppIcon className={styles.exit} onClick={() => dispatch({ type: 'LOGOUT' })} />
         </IconButton>
       </div>
     </div>
