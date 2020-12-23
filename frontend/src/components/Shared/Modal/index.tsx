@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { TextField, FormControlLabel, Checkbox } from '@material-ui/core';
+import { TextField } from '@material-ui/core';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 
 // Local Imports
@@ -74,6 +74,7 @@ const Modal: React.FC<Props> = props => {
               onChange={e => setDescription(e.target.value)}
             />
             <CustomButton onClick={() => createHandler(title, description)} isPurple title="Create" small />
+            {!isValid && <p className={styles.error}>Invalid entries.</p>}
           </form>
         </ThemeProvider>
       </div>

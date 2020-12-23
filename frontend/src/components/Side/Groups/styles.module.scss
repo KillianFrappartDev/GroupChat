@@ -12,6 +12,14 @@
   display: flex;
   align-items: center;
   margin: 20px 0;
+  &:hover {
+    cursor: pointer;
+    .tag,
+    .title {
+      color: rgb(129, 3, 255);
+      color: linear-gradient(90deg, rgba(129, 3, 255, 1) 0%, rgba(195, 17, 255, 1) 100%);
+    }
+  }
 }
 
 .tag {

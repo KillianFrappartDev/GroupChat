@@ -13,16 +13,23 @@ import Groups from '../../components/Side/Groups/index';
 import GroupInfo from '../../components/Side/GroupInfo/index';
 import Members from '../../components/Side/Members/index';
 import Modal from '../../components/Shared/Modal/index';
-import { DUMMY_MESSAGES, DUMMY_GROUPS, DUMMY_MEMBERS } from '../../utils/dummy-data';
+import { DUMMY_MESSAGES, DUMMY_MEMBERS } from '../../utils/dummy-data';
 import styles from './styles.module.scss';
 
 type Props = {};
+
+type GroupData = {
+  _id: string;
+  title: string;
+  description: string;
+};
 
 const AppView: React.FC<Props> = props => {
   const dispatch = useDispatch();
   const [inChannel, setInChannel] = useState(true);
   const [modal, setModal] = useState(false);
   const [groups, setGroups] = useState([]);
+  const [currentGroup, setCurrentGroup] = useState({ id: '0', title: '', description: '' });
 
   useEffect(() => {
     fetchGroups();
@@ -31,6 +38,12 @@ const AppView: React.FC<Props> = props => {
   const logoutHandler = () => {
     localStorage.removeItem('userData');
     dispatch({ type: 'LOGOUT' });
+  };
+
+  const groupHandler = (id: string) => {
+    const current = groups.filter((item: GroupData) => item._id === id);
+    setCurrentGroup(current[0]);
+    setInChannel(true);
   };
 
   // Async Requests
@@ -58,13 +71,14 @@ const AppView: React.FC<Props> = props => {
     }
     if (!response) return;
     setGroups(response.data.groups);
+    setCurrentGroup(response.data.groups[0]);
   };
 
   let sideContent;
   if (inChannel) {
     sideContent = (
       <div className={styles.sideContent}>
-        <GroupInfo />
+        <GroupInfo currentGroup={currentGroup} />
         <Members members={DUMMY_MEMBERS} />
       </div>
     );
@@ -72,7 +86,7 @@ const AppView: React.FC<Props> = props => {
     sideContent = (
       <div className={styles.sideContent}>
         <Search />
-        <Groups groups={groups} />
+        <Groups groups={groups} groupClick={id => groupHandler(id)} />
       </div>
     );
   }
