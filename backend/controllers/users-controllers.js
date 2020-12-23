@@ -1,4 +1,6 @@
 const bcrypt = require('bcryptjs');
+const { AvatarGenerator } = require('random-avatar-generator');
+const generator = new AvatarGenerator();
 
 // Local Imports
 const User = require('../models/user');
@@ -39,17 +41,22 @@ const login = async (req, res, next) => {
 
 const signup = async (req, res, next) => {
   const { checked, email, password, username } = req.body;
-  const defaultImage;
+  const defaultImage = generator.generateRandomAvatar();
 
   // Check if user with this email already exists
-  const existingUser = findUserWithEmail(email);
+  const existingUser = await findUserWithEmail(email);
   if (existingUser) res.json({ message: '[USER][SIGNUP] Access denied, email already used.', access: false });
 
   // Encrypt password
   const hashedPassword = await bcrypt.hash(password, 8);
 
-  // Create new user
+  // Create new user.
   const newUser = new User({ email, password: hashedPassword, username, image: defaultImage });
+  try {
+    await newUser.save();
+  } catch (error) {
+    return next(new Error('[ERROR][USERS] Could not save user in DB'));
+  }
 
   // If Checked is true, create token
   let token = null;
