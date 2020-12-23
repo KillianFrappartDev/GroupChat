@@ -36,6 +36,9 @@ const AppView: React.FC<Props> = props => {
   useEffect(() => {
     fetchGroups();
     const socket = socketIOClient('http://localhost:5000', { transports: ['websocket'] });
+    socket.on('test', () => {
+      console.log('WE MADE IT');
+    });
   }, []);
 
   const logoutHandler = () => {
