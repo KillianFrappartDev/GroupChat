@@ -5,7 +5,9 @@ import styles from './styles.module.scss';
 
 type PropsGroup = {
   title: string;
+  key: string;
   tag: string;
+  id: string;
 };
 
 const Group: React.FC<PropsGroup> = props => {
@@ -26,7 +28,12 @@ const Groups: React.FC<PropsGroups> = props => {
     <div className={styles.container}>
       <div className={styles.wrapper}>
         {props.groups.map(group => (
-          <Group title={group.title} tag={group.tag} />
+          <Group
+            id={group.id}
+            key={group.id}
+            title={group.title}
+            tag={`${group.title[0]}${group.title[1]}`.toUpperCase()}
+          />
         ))}
       </div>
     </div>

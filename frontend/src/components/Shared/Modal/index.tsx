@@ -34,9 +34,9 @@ const Modal: React.FC<Props> = props => {
   };
 
   const titleHandler = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    if (e.target.value.length <= 0) {
+    if (e.target.value.length <= 1) {
       setTitleEror(true);
-      setTitleHelper('Title can not be empty.');
+      setTitleHelper('Title should contain at least 2 characters.');
     } else {
       setTitleEror(false);
       setTitleHelper('');

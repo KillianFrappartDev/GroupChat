@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
+import axios from 'axios';
 
 // Local Imports
 import Messages from '../../components/Main/Messages/index';
@@ -21,16 +22,42 @@ const AppView: React.FC<Props> = props => {
   const dispatch = useDispatch();
   const [inChannel, setInChannel] = useState(true);
   const [modal, setModal] = useState(false);
+  const [groups, setGroups] = useState([]);
 
-  // Async Requests
-  const createGroup = async (title: string, description: string) => {
-    console.log(title, description);
-    setModal(false);
-  };
+  useEffect(() => {
+    fetchGroups();
+  }, []);
 
   const logoutHandler = () => {
     localStorage.removeItem('userData');
     dispatch({ type: 'LOGOUT' });
+  };
+
+  // Async Requests
+  const createGroup = async (title: string, description: string) => {
+    let response;
+    try {
+      response = await axios.post(`${process.env.REACT_APP_SERVER_URL}/groups`, {
+        title,
+        description
+      });
+    } catch (error) {
+      console.log('[ERROR][GROUPS][CREATE]: ', error);
+      return;
+    }
+    setModal(false);
+  };
+
+  const fetchGroups = async () => {
+    let response;
+    try {
+      response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/groups`);
+    } catch (error) {
+      console.log('[ERROR][GROUPS][FETCH]: ', error);
+      return;
+    }
+    if (!response) return;
+    setGroups(response.data.groups);
   };
 
   let sideContent;
@@ -45,7 +72,7 @@ const AppView: React.FC<Props> = props => {
     sideContent = (
       <div className={styles.sideContent}>
         <Search />
-        <Groups groups={DUMMY_GROUPS} />
+        <Groups groups={groups} />
       </div>
     );
   }
