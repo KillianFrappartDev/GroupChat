@@ -15,6 +15,7 @@ const login = async (req, res, next) => {
 };
 
 const signup = async (req, res, next) => {
+  console.log(req.body);
   res.json({ message: 'signup' });
 };
 
