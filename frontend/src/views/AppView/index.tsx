@@ -32,13 +32,12 @@ const AppView: React.FC<Props> = props => {
   const [groups, setGroups] = useState([]);
   const [displayedGroups, setDisplayedGroups] = useState([]);
   const [currentGroup, setCurrentGroup] = useState({ id: '0', title: '', description: '' });
+  const [socket, setSocket] = useState<SocketIOClient.Socket>();
 
   useEffect(() => {
     fetchGroups();
-    const socket = socketIOClient('http://localhost:5000', { transports: ['websocket'] });
-    socket.on('test', () => {
-      console.log('WE MADE IT');
-    });
+    const socket = socketIOClient(process.env.REACT_APP_SOCKET_URL!, { transports: ['websocket'] });
+    setSocket(socket);
   }, []);
 
   const logoutHandler = () => {
@@ -54,6 +53,11 @@ const AppView: React.FC<Props> = props => {
 
   const searchHandler = (grps: any) => {
     setDisplayedGroups(grps);
+  };
+
+  const sendHandler = () => {
+    if (!socket) return;
+    socket.emit('message');
   };
 
   // Async Requests
@@ -120,7 +124,7 @@ const AppView: React.FC<Props> = props => {
       <div className={styles.main}>
         <MainTopBar title={currentGroup.title} menuClick={() => console.log('Clicked')} />
         <Messages messages={DUMMY_MESSAGES} />
-        <MsgInput />
+        <MsgInput sendClick={sendHandler} />
       </div>
       {modal && <Modal backClick={() => setModal(false)} onCreate={createGroup} />}
     </div>
