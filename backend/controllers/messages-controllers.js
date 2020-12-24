@@ -7,6 +7,8 @@ const Group = require('../models/group');
 const fetchMessages = async (req, res, next) => {
   const gid = req.params.gid;
 
+  if (gid === '0') return next(new Error('[ERROR][MESSAGES] wrong group id: '));
+
   // Find group's messages
   const group = await Group.findById(gid).populate('messages');
 

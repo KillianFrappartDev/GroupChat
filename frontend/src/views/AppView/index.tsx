@@ -21,6 +21,7 @@ type GroupData = {
   _id: string;
   title: string;
   description: string;
+  groupClick: () => void;
 };
 
 interface IRootState {
@@ -35,23 +36,28 @@ const AppView: React.FC = () => {
   const dispatch = useDispatch();
   const userData = useSelector((state: IRootState) => state);
 
-  const [inChannel, setInChannel] = useState(true);
+  const [inChannel, setInChannel] = useState(false);
   const [modal, setModal] = useState(false);
-  const [groups, setGroups] = useState([]);
-  const [displayedGroups, setDisplayedGroups] = useState([]);
-  const [currentGroup, setCurrentGroup] = useState({ _id: '0', title: '', description: '' });
   const [messages, setMessages] = useState([]);
-  const [socket, setSocket] = useState<SocketIOClient.Socket>();
+  const [displayedGroups, setDisplayedGroups] = useState<GroupData[]>([]);
+  const [groups, setGroups] = useState([]);
+  const [currentGroup, setCurrentGroup] = useState<GroupData | null>(null);
+  const [socket, setSocket] = useState<SocketIOClient.Socket | null>(null);
 
   useEffect(() => {
     const socket = socketIOClient(process.env.REACT_APP_SOCKET_URL!, { transports: ['websocket'] });
+    // socket.on('fetch', () =>
+    //   setTimeout(() => {
+    //     fetchMessages();
+    //   }, 1000)
+    // );
     setSocket(socket);
     fetchGroups();
   }, []);
 
   useEffect(() => {
     if (!socket) return;
-    socket.emit('group', userData.id, currentGroup._id);
+    socket.emit('group', userData.id, currentGroup?._id);
     fetchMessages();
   }, [currentGroup]);
 
@@ -63,18 +69,14 @@ const AppView: React.FC = () => {
 
   const groupHandler = (id: string) => {
     const current = groups.filter((item: GroupData) => item._id === id);
-    setCurrentGroup(current[0]);
-    setInChannel(true);
+    if (current.length > 0) {
+      setCurrentGroup(current[0]);
+      setInChannel(true);
+    }
   };
 
-  const searchHandler = (grps: any) => {
+  const searchHandler = (grps: GroupData[]) => {
     setDisplayedGroups(grps);
-  };
-
-  const sendHandler = (msg: string) => {
-    if (!socket) return;
-    socket.emit('message', userData.id, currentGroup._id);
-    createMessage(msg);
   };
 
   // Async Requests
@@ -94,10 +96,12 @@ const AppView: React.FC = () => {
   };
 
   const createMessage = async (text: string) => {
+    if (!socket) return;
+
     let response;
     try {
       response = await axios.post(`${process.env.REACT_APP_SERVER_URL}/messages`, {
-        gid: currentGroup._id,
+        gid: currentGroup?._id,
         text,
         username: userData.username,
         image: userData.image
@@ -107,7 +111,7 @@ const AppView: React.FC = () => {
       return;
     }
     if (!response) return;
-    console.log(response.data);
+    socket?.emit('message', userData.id, currentGroup?._id);
   };
 
   const fetchGroups = async () => {
@@ -121,13 +125,12 @@ const AppView: React.FC = () => {
     if (!response) return;
     setGroups(response.data.groups);
     setDisplayedGroups(response.data.groups);
-    setCurrentGroup(response.data.groups[0]);
   };
 
   const fetchMessages = async () => {
     let response;
     try {
-      response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/messages/${currentGroup._id}`);
+      response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/messages/${currentGroup?._id}`);
     } catch (error) {
       console.log('[ERROR][MESSAGES][FETCH]: ', error);
       return;
@@ -168,9 +171,9 @@ const AppView: React.FC = () => {
         <BottomBar exitClick={logoutHandler} />
       </div>
       <div className={styles.main}>
-        <MainTopBar title={currentGroup.title} menuClick={() => console.log('Clicked')} />
+        <MainTopBar title={currentGroup?.title} menuClick={() => console.log('Clicked')} />
         <Messages messages={messages} />
-        <MsgInput sendClick={sendHandler} />
+        <MsgInput sendClick={createMessage} />
       </div>
       {modal && <Modal backClick={() => setModal(false)} onCreate={createGroup} />}
     </div>

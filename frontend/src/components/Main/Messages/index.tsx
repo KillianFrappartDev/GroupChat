@@ -7,6 +7,7 @@ type PropsMessage = {
   username: string;
   text: string;
   image: string;
+  _id: string;
 };
 
 const Message: React.FC<PropsMessage> = props => {
@@ -30,7 +31,13 @@ const Messages: React.FC<PropsMessages> = props => {
     <div className={styles.container}>
       <div className={styles.wrapper}>
         {props.messages.map(message => (
-          <Message username={message.username} text={message.text} image={message.image} />
+          <Message
+            _id={message._id}
+            key={message._id}
+            username={message.username}
+            text={message.text}
+            image={message.image}
+          />
         ))}
       </div>
     </div>

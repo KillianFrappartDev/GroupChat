@@ -6,7 +6,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import styles from './styles.module.scss';
 
 type Props = {
-  title: String;
+  title?: String;
   menuClick: () => void;
 };
 

@@ -7,15 +7,15 @@ type Props = {
   currentGroup: {
     title: string;
     description: string;
-  };
+  } | null;
 };
 
 const GroupInfo: React.FC<Props> = props => {
   return (
     <div className={styles.container}>
       <div className={styles.wrapper}>
-        <p className={styles.title}>{props.currentGroup.title}</p>
-        <p className={styles.description}>{props.currentGroup.description}</p>
+        <p className={styles.title}>{props.currentGroup?.title}</p>
+        <p className={styles.description}>{props.currentGroup?.description}</p>
       </div>
     </div>
   );

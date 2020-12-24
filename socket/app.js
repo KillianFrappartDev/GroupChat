@@ -13,6 +13,7 @@ io.on('connection', socket => {
   // New message
   socket.on('message', (uid, gid) => {
     console.log(`[MESSAGE] User: ${uid} sent message in Group: ${gid}`);
+    io.emit('fetch');
   });
 
   // Close connection

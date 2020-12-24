@@ -5,8 +5,8 @@ import styles from './styles.module.scss';
 
 type PropsGroup = {
   title: string;
-  key: string;
-  tag: string;
+  key?: string;
+  tag?: string;
   _id: string;
   groupClick: (id: string) => void;
 };
