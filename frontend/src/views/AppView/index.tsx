@@ -46,11 +46,7 @@ const AppView: React.FC = () => {
 
   useEffect(() => {
     const socket = socketIOClient(process.env.REACT_APP_SOCKET_URL!, { transports: ['websocket'] });
-    // socket.on('fetch', () =>
-    //   setTimeout(() => {
-    //     fetchMessages();
-    //   }, 1000)
-    // );
+    socket.on('fetch', (id: string) => fetchMessages(id));
     setSocket(socket);
     fetchGroups();
   }, []);
@@ -68,9 +64,13 @@ const AppView: React.FC = () => {
   };
 
   const groupHandler = (id: string) => {
+    console.log('GROUP HANDLER', id);
+
     const current = groups.filter((item: GroupData) => item._id === id);
     if (current.length > 0) {
       setCurrentGroup(current[0]);
+      console.log('GROUP HANDLER CURRENT', current[0]);
+
       setInChannel(true);
     }
   };
@@ -91,6 +91,7 @@ const AppView: React.FC = () => {
       console.log('[ERROR][GROUPS][CREATE]: ', error);
       return;
     }
+    if (!response) return;
     setModal(false);
     fetchGroups();
   };
@@ -127,15 +128,16 @@ const AppView: React.FC = () => {
     setDisplayedGroups(response.data.groups);
   };
 
-  const fetchMessages = async () => {
+  const fetchMessages = async (gid = currentGroup?._id) => {
+    console.log('FETCHING: ', gid);
     let response;
     try {
-      response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/messages/${currentGroup?._id}`);
+      response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/messages/${gid}`);
     } catch (error) {
       console.log('[ERROR][MESSAGES][FETCH]: ', error);
       return;
     }
-    if (!response) return;
+    if (!response.data.messages) return;
     setMessages(response.data.messages);
   };
 
