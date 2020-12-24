@@ -46,14 +46,17 @@ const AppView: React.FC = () => {
 
   useEffect(() => {
     const socket = socketIOClient(process.env.REACT_APP_SOCKET_URL!, { transports: ['websocket'] });
-    socket.on('fetch', (id: string) => fetchMessages(id));
     setSocket(socket);
     fetchGroups();
   }, []);
 
   useEffect(() => {
     if (!socket) return;
-    socket.emit('group', userData.id, currentGroup?._id);
+    socket.emit('join group', userData.id, currentGroup?._id);
+    socket.on('fetch messages', (id: string) => {
+      console.log('CURRENT: ', currentGroup?._id, ' ID: ', id);
+      if (currentGroup?._id == id) fetchMessages(id);
+    });
     fetchMessages();
   }, [currentGroup]);
 
@@ -64,13 +67,9 @@ const AppView: React.FC = () => {
   };
 
   const groupHandler = (id: string) => {
-    console.log('GROUP HANDLER', id);
-
     const current = groups.filter((item: GroupData) => item._id === id);
     if (current.length > 0) {
       setCurrentGroup(current[0]);
-      console.log('GROUP HANDLER CURRENT', current[0]);
-
       setInChannel(true);
     }
   };
@@ -94,6 +93,7 @@ const AppView: React.FC = () => {
     if (!response) return;
     setModal(false);
     fetchGroups();
+    socket?.emit('create group', userData.id, title);
   };
 
   const createMessage = async (text: string) => {
@@ -129,7 +129,6 @@ const AppView: React.FC = () => {
   };
 
   const fetchMessages = async (gid = currentGroup?._id) => {
-    console.log('FETCHING: ', gid);
     let response;
     try {
       response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/messages/${gid}`);

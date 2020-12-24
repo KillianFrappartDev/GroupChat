@@ -6,14 +6,19 @@ io.on('connection', socket => {
   console.log('[USER] A user connected!');
 
   // Join group
-  socket.on('group', (uid, gid) => {
+  socket.on('join group', (uid, gid) => {
     console.log(`[GROUP] User: ${uid} joined Group: ${gid}`);
+  });
+
+  // New group
+  socket.on('create group', (uid, title) => {
+    console.log(`[GROUP] User: ${uid} created Group: ${title}`);
   });
 
   // New message
   socket.on('message', (uid, gid) => {
     console.log(`[MESSAGE] User: ${uid} sent message in Group: ${gid}`);
-    io.emit('fetch', gid);
+    io.emit('fetch messages', gid);
   });
 
   // Close connection
