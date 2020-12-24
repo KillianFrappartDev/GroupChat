@@ -5,7 +5,12 @@ const Message = require('../models/message');
 const Group = require('../models/group');
 
 const fetchMessages = async (req, res, next) => {
-  res.json({ message: 'fetchMessages' });
+  const gid = req.params.gid;
+
+  // Find group's messages
+  const group = await Group.findById(gid).populate('messages');
+
+  res.json({ message: 'Messages fetched!', messages: group.messages });
 };
 
 const sendMessage = async (req, res, next) => {

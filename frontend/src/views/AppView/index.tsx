@@ -14,7 +14,7 @@ import Groups from '../../components/Side/Groups/index';
 import GroupInfo from '../../components/Side/GroupInfo/index';
 import Members from '../../components/Side/Members/index';
 import Modal from '../../components/Shared/Modal/index';
-import { DUMMY_MESSAGES, DUMMY_MEMBERS } from '../../utils/dummy-data';
+import { DUMMY_MEMBERS } from '../../utils/dummy-data';
 import styles from './styles.module.scss';
 
 type GroupData = {
@@ -40,6 +40,7 @@ const AppView: React.FC = () => {
   const [groups, setGroups] = useState([]);
   const [displayedGroups, setDisplayedGroups] = useState([]);
   const [currentGroup, setCurrentGroup] = useState({ _id: '0', title: '', description: '' });
+  const [messages, setMessages] = useState([]);
   const [socket, setSocket] = useState<SocketIOClient.Socket>();
 
   useEffect(() => {
@@ -51,6 +52,7 @@ const AppView: React.FC = () => {
   useEffect(() => {
     if (!socket) return;
     socket.emit('group', userData.id, currentGroup._id);
+    fetchMessages();
   }, [currentGroup]);
 
   const logoutHandler = () => {
@@ -122,6 +124,18 @@ const AppView: React.FC = () => {
     setCurrentGroup(response.data.groups[0]);
   };
 
+  const fetchMessages = async () => {
+    let response;
+    try {
+      response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/messages/${currentGroup._id}`);
+    } catch (error) {
+      console.log('[ERROR][MESSAGES][FETCH]: ', error);
+      return;
+    }
+    if (!response) return;
+    setMessages(response.data.messages);
+  };
+
   let sideContent;
   if (inChannel) {
     sideContent = (
@@ -155,7 +169,7 @@ const AppView: React.FC = () => {
       </div>
       <div className={styles.main}>
         <MainTopBar title={currentGroup.title} menuClick={() => console.log('Clicked')} />
-        <Messages messages={DUMMY_MESSAGES} />
+        <Messages messages={messages} />
         <MsgInput sendClick={sendHandler} />
       </div>
       {modal && <Modal backClick={() => setModal(false)} onCreate={createGroup} />}
