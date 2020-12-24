@@ -6,7 +6,7 @@ import SendIcon from '@material-ui/icons/Send';
 import styles from './styles.module.scss';
 
 type Props = {
-  sendClick: () => void;
+  sendClick: (msg: string) => void;
 };
 
 const MsgInput: React.FC<Props> = props => {
@@ -21,7 +21,13 @@ const MsgInput: React.FC<Props> = props => {
         value={msg}
         onChange={e => setMsg(e.target.value)}
       />
-      <IconButton className={styles.iconButton} onClick={props.sendClick}>
+      <IconButton
+        className={styles.iconButton}
+        onClick={() => {
+          props.sendClick(msg);
+          setMsg('');
+        }}
+      >
         <SendIcon className={styles.send} />
       </IconButton>
     </div>

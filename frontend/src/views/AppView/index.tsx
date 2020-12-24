@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
 import socketIOClient from 'socket.io-client';
 
@@ -17,30 +17,44 @@ import Modal from '../../components/Shared/Modal/index';
 import { DUMMY_MESSAGES, DUMMY_MEMBERS } from '../../utils/dummy-data';
 import styles from './styles.module.scss';
 
-type Props = {};
-
 type GroupData = {
   _id: string;
   title: string;
   description: string;
 };
 
-const AppView: React.FC<Props> = props => {
+interface IRootState {
+  isLogged: boolean;
+  id: string | null;
+  username: string | null;
+  image: string | null;
+  token: string | null;
+}
+
+const AppView: React.FC = () => {
   const dispatch = useDispatch();
+  const userData = useSelector((state: IRootState) => state);
+
   const [inChannel, setInChannel] = useState(true);
   const [modal, setModal] = useState(false);
   const [groups, setGroups] = useState([]);
   const [displayedGroups, setDisplayedGroups] = useState([]);
-  const [currentGroup, setCurrentGroup] = useState({ id: '0', title: '', description: '' });
+  const [currentGroup, setCurrentGroup] = useState({ _id: '0', title: '', description: '' });
   const [socket, setSocket] = useState<SocketIOClient.Socket>();
 
   useEffect(() => {
-    fetchGroups();
     const socket = socketIOClient(process.env.REACT_APP_SOCKET_URL!, { transports: ['websocket'] });
     setSocket(socket);
+    fetchGroups();
   }, []);
 
+  useEffect(() => {
+    if (!socket) return;
+    socket.emit('group', userData.id, currentGroup._id);
+  }, [currentGroup]);
+
   const logoutHandler = () => {
+    socket?.disconnect();
     localStorage.removeItem('userData');
     dispatch({ type: 'LOGOUT' });
   };
@@ -55,9 +69,10 @@ const AppView: React.FC<Props> = props => {
     setDisplayedGroups(grps);
   };
 
-  const sendHandler = () => {
+  const sendHandler = (msg: string) => {
     if (!socket) return;
-    socket.emit('message');
+    socket.emit('message', userData.id, currentGroup._id);
+    createMessage(msg);
   };
 
   // Async Requests
@@ -74,6 +89,23 @@ const AppView: React.FC<Props> = props => {
     }
     setModal(false);
     fetchGroups();
+  };
+
+  const createMessage = async (text: string) => {
+    let response;
+    try {
+      response = await axios.post(`${process.env.REACT_APP_SERVER_URL}/messages`, {
+        gid: currentGroup._id,
+        text,
+        username: userData.username,
+        image: userData.image
+      });
+    } catch (error) {
+      console.log('[ERROR][GROUPS][CREATE]: ', error);
+      return;
+    }
+    if (!response) return;
+    console.log(response.data);
   };
 
   const fetchGroups = async () => {

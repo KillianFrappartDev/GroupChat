@@ -7,6 +7,10 @@ import AuthView from './views/AuthView/index';
 
 interface IRootState {
   isLogged: boolean;
+  id: string | null;
+  username: string | null;
+  image: string | null;
+  token: string | null;
 }
 
 const App: React.FC = () => {
