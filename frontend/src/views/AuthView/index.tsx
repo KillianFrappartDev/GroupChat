@@ -8,7 +8,6 @@ import { useDispatch } from 'react-redux';
 import Welcome from '../../components/Auth/Welcome/index';
 import Login from '../../components/Auth/Login/index';
 import Signup from '../../components/Auth/Signup/index';
-import styles from './styles.module.scss';
 
 const darkTheme = createMuiTheme({
   palette: {

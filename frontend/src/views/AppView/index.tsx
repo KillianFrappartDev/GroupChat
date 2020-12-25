@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
+import socketIOClient from 'socket.io-client';
 
 // Local Imports
 import Messages from '../../components/Main/Messages/index';
@@ -13,41 +14,66 @@ import Groups from '../../components/Side/Groups/index';
 import GroupInfo from '../../components/Side/GroupInfo/index';
 import Members from '../../components/Side/Members/index';
 import Modal from '../../components/Shared/Modal/index';
-import { DUMMY_MESSAGES, DUMMY_MEMBERS } from '../../utils/dummy-data';
+import { DUMMY_MEMBERS } from '../../utils/dummy-data';
 import styles from './styles.module.scss';
-
-type Props = {};
 
 type GroupData = {
   _id: string;
   title: string;
   description: string;
+  groupClick: () => void;
 };
 
-const AppView: React.FC<Props> = props => {
+interface IRootState {
+  isLogged: boolean;
+  id: string | null;
+  username: string | null;
+  image: string | null;
+  token: string | null;
+}
+
+const AppView: React.FC = () => {
   const dispatch = useDispatch();
-  const [inChannel, setInChannel] = useState(true);
+  const userData = useSelector((state: IRootState) => state);
+
+  const [inChannel, setInChannel] = useState(false);
   const [modal, setModal] = useState(false);
+  const [messages, setMessages] = useState([]);
+  const [displayedGroups, setDisplayedGroups] = useState<GroupData[]>([]);
   const [groups, setGroups] = useState([]);
-  const [displayedGroups, setDisplayedGroups] = useState([]);
-  const [currentGroup, setCurrentGroup] = useState({ id: '0', title: '', description: '' });
+  const [currentGroup, setCurrentGroup] = useState<GroupData | null>(null);
+  const [socket, setSocket] = useState<SocketIOClient.Socket | null>(null);
 
   useEffect(() => {
+    const socket = socketIOClient(process.env.REACT_APP_SOCKET_URL!, { transports: ['websocket'] });
+    socket.emit('new user', userData.id);
+    socket.on('fetch messages', (id: string) => fetchMessages(id));
+    setSocket(socket);
     fetchGroups();
   }, []);
 
+  useEffect(() => {
+    if (!socket) return;
+    socket.emit('join group', userData.id, currentGroup?._id);
+
+    fetchMessages();
+  }, [currentGroup]);
+
   const logoutHandler = () => {
+    socket?.disconnect();
     localStorage.removeItem('userData');
     dispatch({ type: 'LOGOUT' });
   };
 
   const groupHandler = (id: string) => {
     const current = groups.filter((item: GroupData) => item._id === id);
-    setCurrentGroup(current[0]);
-    setInChannel(true);
+    if (current.length > 0) {
+      setCurrentGroup(current[0]);
+      setInChannel(true);
+    }
   };
 
-  const searchHandler = (grps: any) => {
+  const searchHandler = (grps: GroupData[]) => {
     setDisplayedGroups(grps);
   };
 
@@ -63,8 +89,29 @@ const AppView: React.FC<Props> = props => {
       console.log('[ERROR][GROUPS][CREATE]: ', error);
       return;
     }
+    if (!response) return;
     setModal(false);
     fetchGroups();
+    socket?.emit('create group', userData.id, title);
+  };
+
+  const createMessage = async (text: string) => {
+    if (!socket) return;
+
+    let response;
+    try {
+      response = await axios.post(`${process.env.REACT_APP_SERVER_URL}/messages`, {
+        gid: currentGroup?._id,
+        text,
+        username: userData.username,
+        image: userData.image
+      });
+    } catch (error) {
+      console.log('[ERROR][GROUPS][CREATE]: ', error);
+      return;
+    }
+    if (!response) return;
+    socket?.emit('message', userData.id, currentGroup?._id);
   };
 
   const fetchGroups = async () => {
@@ -78,7 +125,18 @@ const AppView: React.FC<Props> = props => {
     if (!response) return;
     setGroups(response.data.groups);
     setDisplayedGroups(response.data.groups);
-    setCurrentGroup(response.data.groups[0]);
+  };
+
+  const fetchMessages = async (gid = currentGroup?._id) => {
+    let response;
+    try {
+      response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/messages/${gid}`);
+    } catch (error) {
+      console.log('[ERROR][MESSAGES][FETCH]: ', error);
+      return;
+    }
+    if (!response.data.messages) return;
+    setMessages(response.data.messages);
   };
 
   let sideContent;
@@ -113,9 +171,9 @@ const AppView: React.FC<Props> = props => {
         <BottomBar exitClick={logoutHandler} />
       </div>
       <div className={styles.main}>
-        <MainTopBar title={currentGroup.title} menuClick={() => console.log('Clicked')} />
-        <Messages messages={DUMMY_MESSAGES} />
-        <MsgInput />
+        <MainTopBar title={currentGroup?.title} menuClick={() => console.log('Clicked')} />
+        <Messages messages={messages} />
+        <MsgInput sendClick={createMessage} />
       </div>
       {modal && <Modal backClick={() => setModal(false)} onCreate={createGroup} />}
     </div>

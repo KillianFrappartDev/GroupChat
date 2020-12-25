@@ -14,6 +14,7 @@ type Group = {
   title: string;
   _id: string;
   description: string;
+  groupClick: () => {};
 };
 
 const Search: React.FC<Props> = props => {

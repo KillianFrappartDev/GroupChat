@@ -27,7 +27,7 @@ const Members: React.FC<MembersProps> = props => {
       <p className={styles.title}>Members</p>
       <div className={styles.wrapper}>
         {props.members.map(member => (
-          <Member username={member.username} image={member.image} />
+          <Member key={Math.random()} username={member.username} image={member.image} />
         ))}
       </div>
     </div>
