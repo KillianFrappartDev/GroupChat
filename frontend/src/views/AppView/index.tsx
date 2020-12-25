@@ -46,6 +46,8 @@ const AppView: React.FC = () => {
 
   useEffect(() => {
     const socket = socketIOClient(process.env.REACT_APP_SOCKET_URL!, { transports: ['websocket'] });
+    socket.emit('new user', userData.id);
+    socket.on('fetch messages', (id: string) => fetchMessages(id));
     setSocket(socket);
     fetchGroups();
   }, []);
@@ -53,10 +55,7 @@ const AppView: React.FC = () => {
   useEffect(() => {
     if (!socket) return;
     socket.emit('join group', userData.id, currentGroup?._id);
-    socket.on('fetch messages', (id: string) => {
-      console.log('CURRENT: ', currentGroup?._id, ' ID: ', id);
-      if (currentGroup?._id == id) fetchMessages(id);
-    });
+
     fetchMessages();
   }, [currentGroup]);
 
