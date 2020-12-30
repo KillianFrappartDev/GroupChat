@@ -60,6 +60,7 @@ const AppView: React.FC = () => {
     fetchMessages();
   }, [currentGroup]);
 
+  // Handlers
   const logoutHandler = () => {
     socket?.disconnect();
     localStorage.removeItem('userData');
@@ -142,6 +143,7 @@ const AppView: React.FC = () => {
     setMembers(response.data.members);
   };
 
+  // Render
   let sideContent;
   if (inChannel) {
     sideContent = (
@@ -175,7 +177,7 @@ const AppView: React.FC = () => {
       </div>
       <div className={styles.main}>
         <MainTopBar title={currentGroup?.title} menuClick={() => console.log('Clicked')} />
-        <Messages messages={messages} />
+        {inChannel && <Messages messages={messages} />}
         {inChannel && <MsgInput sendClick={createMessage} />}
       </div>
       {modal && <Modal backClick={() => setModal(false)} onCreate={createGroup} />}

@@ -7,8 +7,6 @@ class User {
     this.sid = sid;
     this.gid;
   }
-
-  static count = 0;
 }
 
 let userList = [];
