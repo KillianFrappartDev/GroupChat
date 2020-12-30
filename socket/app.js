@@ -6,7 +6,6 @@ class User {
     this.uid = uid;
     this.sid = sid;
     this.gid;
-    User.count += 1;
   }
 
   static count = 0;
@@ -21,7 +20,7 @@ io.on('connection', socket => {
   // New user
   socket.on('new user', uid => {
     userList.push(new User(uid, socket.id));
-    console.log('User count: ', User.count);
+    console.log('User count: ', userList.length);
   });
 
   // Join group
@@ -57,18 +56,3 @@ io.on('connection', socket => {
 server.listen(process.env.PORT || 4000, () =>
   console.log(`Socket server running on port: ${process.env.PORT || 4000}!`)
 );
-
-// const http = require('http');
-// const socketIo = require('socket.io');
-// const server = http.createServer(app);
-// const io = socketIo(server);
-// app.set('socketio', io);
-
-// const testIO = async (req, res, next) => {
-//   const io = req.app.get('socketio');
-//   io.on('connection', socket => {
-//     socket.emit('test');
-//   });
-// };
-
-// exports.testIO = testIO;
