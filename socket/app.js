@@ -7,8 +7,6 @@ class User {
     this.sid = sid;
     this.gid;
   }
-
-  static count = 0;
 }
 
 let userList = [];
@@ -34,6 +32,7 @@ io.on('connection', socket => {
   // New group
   socket.on('create group', (uid, title) => {
     console.log(`[GROUP] User: ${uid} created Group: ${title}`);
+    io.emit('fetch group');
   });
 
   // New message

@@ -5,7 +5,7 @@ const fetchGroups = async (req, res, next) => {
   // Fetch all groups
   let groups;
   try {
-    groups = await Group.find();
+    groups = await Group.find().populate('members');
   } catch (error) {
     return next(new Error('[ERROR][GROUPS] Could not fetch groups: ' + error));
   }
@@ -15,18 +15,18 @@ const fetchGroups = async (req, res, next) => {
 };
 
 const fetchGroupData = async (req, res, next) => {
-  const { id } = req.body;
+  const id = req.params.gid;
 
   // Fetch group by id and populate members.
   let group;
   try {
-    group = await Group.findById(id).populate('members');
+    group = await Group.findById(id).populate('members messages');
   } catch (error) {
     return next(new Error('[ERROR][GROUPS] Could not fetch groups by id: ' + error));
   }
 
   // Send Response
-  res.json({ message: 'Group fetched!', group });
+  res.json({ message: 'Group fetched!', messages: group.messages, members: group.members });
 };
 
 const createGroup = async (req, res, next) => {
