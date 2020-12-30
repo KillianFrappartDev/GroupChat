@@ -34,6 +34,7 @@ io.on('connection', socket => {
   // New group
   socket.on('create group', (uid, title) => {
     console.log(`[GROUP] User: ${uid} created Group: ${title}`);
+    io.emit('fetch group');
   });
 
   // New message

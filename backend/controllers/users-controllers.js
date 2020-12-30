@@ -4,7 +4,6 @@ const generator = new AvatarGenerator();
 
 // Local Imports
 const User = require('../models/user');
-const Guest = require('../models/guest');
 const { createToken, checkToken } = require('../utils/token');
 
 const findUserWithEmail = async email => {
@@ -81,10 +80,10 @@ const signup = async (req, res, next) => {
 
 const guest = async (req, res, next) => {
   const randomUsername = `Guest${Math.floor(Math.random() * 99999) + 1}`;
-  const defaultImage = 'https://t4.ftcdn.net/jpg/00/64/67/63/360_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg';
+  const defaultImage = generator.generateRandomAvatar();
 
   // Create Guest
-  const newGuest = new Guest({ username: randomUsername, image: defaultImage });
+  const newGuest = new User({ username: randomUsername, image: defaultImage });
   try {
     await newGuest.save();
   } catch (error) {

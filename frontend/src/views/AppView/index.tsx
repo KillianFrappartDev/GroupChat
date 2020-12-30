@@ -48,6 +48,7 @@ const AppView: React.FC = () => {
     const socket = socketIOClient(process.env.REACT_APP_SOCKET_URL!, { transports: ['websocket'] });
     socket.emit('new user', userData.id);
     socket.on('fetch messages', (id: string) => fetchMessages(id));
+    socket.on('fetch group', fetchGroups);
     setSocket(socket);
     fetchGroups();
   }, []);
