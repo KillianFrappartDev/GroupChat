@@ -14,6 +14,21 @@ const fetchGroups = async (req, res, next) => {
   res.json({ message: 'Groups Fetched!', groups });
 };
 
+const fetchGroupData = async (req, res, next) => {
+  const id = req.params.gid;
+
+  // Fetch group by id and populate members.
+  let group;
+  try {
+    group = await Group.findById(id).populate('members messages');
+  } catch (error) {
+    return next(new Error('[ERROR][GROUPS] Could not fetch groups by id: ' + error));
+  }
+
+  // Send Response
+  res.json({ message: 'Group fetched!', messages: group.messages, members: group.members });
+};
+
 const createGroup = async (req, res, next) => {
   const { title, description } = req.body;
 
@@ -30,4 +45,5 @@ const createGroup = async (req, res, next) => {
 };
 
 exports.fetchGroups = fetchGroups;
+exports.fetchGroupData = fetchGroupData;
 exports.createGroup = createGroup;

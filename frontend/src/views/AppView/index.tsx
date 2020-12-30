@@ -20,14 +20,7 @@ type GroupData = {
   _id: string;
   title: string;
   description: string;
-  members: any;
   groupClick: () => void;
-};
-
-type MemberData = {
-  _id: string;
-  username: string;
-  image: string;
 };
 
 interface IRootState {
@@ -45,6 +38,7 @@ const AppView: React.FC = () => {
   const [inChannel, setInChannel] = useState(false);
   const [modal, setModal] = useState(false);
   const [messages, setMessages] = useState([]);
+  const [members, setMembers] = useState([]);
   const [displayedGroups, setDisplayedGroups] = useState<GroupData[]>([]);
   const [groups, setGroups] = useState([]);
   const [currentGroup, setCurrentGroup] = useState<GroupData | null>(null);
@@ -138,13 +132,14 @@ const AppView: React.FC = () => {
   const fetchMessages = async (gid = currentGroup?._id) => {
     let response;
     try {
-      response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/messages/${gid}`);
+      response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/groups/${gid}`);
     } catch (error) {
       console.log('[ERROR][MESSAGES][FETCH]: ', error);
       return;
     }
     if (!response.data.messages) return;
     setMessages(response.data.messages);
+    setMembers(response.data.members);
   };
 
   let sideContent;
@@ -152,7 +147,7 @@ const AppView: React.FC = () => {
     sideContent = (
       <div className={styles.sideContent}>
         <GroupInfo currentGroup={currentGroup} />
-        <Members members={currentGroup?.members} />
+        <Members members={members} />
       </div>
     );
   } else {
