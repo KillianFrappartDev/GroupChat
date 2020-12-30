@@ -4,6 +4,7 @@ import React from 'react';
 import styles from './styles.module.scss';
 
 type MemberProps = {
+  _id: string;
   username: string;
   image: string;
 };
@@ -27,7 +28,7 @@ const Members: React.FC<MembersProps> = props => {
       <p className={styles.title}>Members</p>
       <div className={styles.wrapper}>
         {props.members.map(member => (
-          <Member key={Math.random()} username={member.username} image={member.image} />
+          <Member key={member?._id} _id={member?._id} username={member?.username} image={member?.image} />
         ))}
       </div>
     </div>

@@ -14,6 +14,7 @@ type Group = {
   title: string;
   _id: string;
   description: string;
+  members: any;
   groupClick: () => {};
 };
 

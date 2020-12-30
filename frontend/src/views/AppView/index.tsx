@@ -14,14 +14,20 @@ import Groups from '../../components/Side/Groups/index';
 import GroupInfo from '../../components/Side/GroupInfo/index';
 import Members from '../../components/Side/Members/index';
 import Modal from '../../components/Shared/Modal/index';
-import { DUMMY_MEMBERS } from '../../utils/dummy-data';
 import styles from './styles.module.scss';
 
 type GroupData = {
   _id: string;
   title: string;
   description: string;
+  members: any;
   groupClick: () => void;
+};
+
+type MemberData = {
+  _id: string;
+  username: string;
+  image: string;
 };
 
 interface IRootState {
@@ -105,7 +111,8 @@ const AppView: React.FC = () => {
         gid: currentGroup?._id,
         text,
         username: userData.username,
-        image: userData.image
+        image: userData.image,
+        uid: userData.id
       });
     } catch (error) {
       console.log('[ERROR][GROUPS][CREATE]: ', error);
@@ -145,7 +152,7 @@ const AppView: React.FC = () => {
     sideContent = (
       <div className={styles.sideContent}>
         <GroupInfo currentGroup={currentGroup} />
-        <Members members={DUMMY_MEMBERS} />
+        <Members members={currentGroup?.members} />
       </div>
     );
   } else {
@@ -174,7 +181,7 @@ const AppView: React.FC = () => {
       <div className={styles.main}>
         <MainTopBar title={currentGroup?.title} menuClick={() => console.log('Clicked')} />
         <Messages messages={messages} />
-        <MsgInput sendClick={createMessage} />
+        {inChannel && <MsgInput sendClick={createMessage} />}
       </div>
       {modal && <Modal backClick={() => setModal(false)} onCreate={createGroup} />}
     </div>
