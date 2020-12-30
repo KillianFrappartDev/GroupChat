@@ -177,7 +177,7 @@ const AppView: React.FC = () => {
         <BottomBar exitClick={logoutHandler} />
       </div>
       <div className={styles.main}>
-        <MainTopBar title={currentGroup?.title} menuClick={() => setMobile(true)} />
+        <MainTopBar title={inChannel ? currentGroup?.title : ''} menuClick={() => setMobile(true)} />
         {inChannel && <Messages messages={messages} onClick={() => setMobile(false)} />}
         {inChannel && <MsgInput sendClick={createMessage} onClick={() => setMobile(false)} />}
       </div>

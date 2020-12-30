@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 // Local Imports
 import styles from './styles.module.scss';
@@ -28,8 +28,15 @@ type PropsMessages = {
 };
 
 const Messages: React.FC<PropsMessages> = props => {
+  useEffect(() => {
+    const chatElement = document.getElementById('chat');
+    if (chatElement) {
+      chatElement.scrollTop = chatElement.scrollHeight;
+    }
+  });
+
   return (
-    <div className={styles.container} onClick={props.onClick}>
+    <div id="chat" className={styles.container} onClick={props.onClick}>
       <div className={styles.wrapper}>
         {props.messages.map(message => (
           <Message
