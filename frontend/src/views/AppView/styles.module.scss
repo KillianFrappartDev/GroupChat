@@ -15,7 +15,8 @@
     @include columnLayout;
   }
 
-  .side {
+  .side,
+  .mobile {
     flex: 1;
     background-color: #19161b;
     @include columnLayout;
@@ -38,4 +39,21 @@
   flex-direction: column;
   justify-content: flex-start;
   overflow-y: hidden;
+}
+
+.mobile {
+  position: absolute;
+  height: 100vh;
+  width: 80%;
+  z-index: 20;
+  animation: slide-in 0.5s linear 1 forwards;
+}
+
+@keyframes slide-in {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(0);
+  }
 }
