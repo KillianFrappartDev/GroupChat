@@ -36,6 +36,7 @@ const AppView: React.FC = () => {
   const userData = useSelector((state: IRootState) => state);
 
   const [inChannel, setInChannel] = useState(false);
+  const [mobile, setMobile] = useState(false);
   const [modal, setModal] = useState(false);
   const [messages, setMessages] = useState([]);
   const [members, setMembers] = useState([]);
@@ -163,7 +164,7 @@ const AppView: React.FC = () => {
 
   return (
     <div className={styles.container}>
-      <div className={styles.side}>
+      <div className={mobile ? styles.mobile : styles.side}>
         <SideTopBar
           inChannel={inChannel}
           arrowClick={() => {
@@ -176,9 +177,9 @@ const AppView: React.FC = () => {
         <BottomBar exitClick={logoutHandler} />
       </div>
       <div className={styles.main}>
-        <MainTopBar title={currentGroup?.title} menuClick={() => console.log('Clicked')} />
-        {inChannel && <Messages messages={messages} />}
-        {inChannel && <MsgInput sendClick={createMessage} />}
+        <MainTopBar title={inChannel ? currentGroup?.title : ''} menuClick={() => setMobile(true)} />
+        {inChannel && <Messages messages={messages} onClick={() => setMobile(false)} />}
+        {inChannel && <MsgInput sendClick={createMessage} onClick={() => setMobile(false)} />}
       </div>
       {modal && <Modal backClick={() => setModal(false)} onCreate={createGroup} />}
     </div>

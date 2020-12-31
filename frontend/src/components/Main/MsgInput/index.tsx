@@ -7,13 +7,14 @@ import styles from './styles.module.scss';
 
 type Props = {
   sendClick: (msg: string) => void;
+  onClick: () => void;
 };
 
 const MsgInput: React.FC<Props> = props => {
   const [msg, setMsg] = useState('');
 
   return (
-    <div className={styles.container}>
+    <div className={styles.container} onClick={props.onClick}>
       <InputBase
         className={styles.input}
         multiline
