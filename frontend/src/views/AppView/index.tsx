@@ -187,7 +187,10 @@ const AppView: React.FC = () => {
             setInChannel(false);
             setDisplayedGroups(groups);
           }}
-          plusClick={() => setModal(true)}
+          plusClick={() => {
+            setModal(true);
+            setMobile(false);
+          }}
         />
         {sideContent}
         <BottomBar exitClick={logoutHandler} />

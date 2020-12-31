@@ -15,6 +15,10 @@
   background-color: #120f13;
   border-radius: 10px;
   padding: 30px;
+  @media screen and (max-width: 600px) {
+    width: 100%;
+    padding: 10px;
+  }
 }
 
 .form {
