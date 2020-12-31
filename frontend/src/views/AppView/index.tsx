@@ -186,6 +186,8 @@ const AppView: React.FC = () => {
           arrowClick={() => {
             setInChannel(false);
             setDisplayedGroups(groups);
+            setMembers([]);
+            setMessages([]);
           }}
           plusClick={() => {
             setModal(true);
