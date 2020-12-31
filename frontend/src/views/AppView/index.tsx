@@ -4,6 +4,7 @@ import axios from 'axios';
 import socketIOClient from 'socket.io-client';
 
 // Local Imports
+import Onboard from '../../components/Main/Onboard/index';
 import Messages from '../../components/Main/Messages/index';
 import MsgInput from '../../components/Main/MsgInput/index';
 import MainTopBar from '../../components/Main/TopBar/index';
@@ -146,6 +147,8 @@ const AppView: React.FC = () => {
 
   // Render
   let sideContent;
+  let mainContent;
+
   if (inChannel) {
     sideContent = (
       <div className={styles.sideContent}>
@@ -153,11 +156,24 @@ const AppView: React.FC = () => {
         <Members members={members} />
       </div>
     );
+    mainContent = (
+      <div className={styles.main}>
+        <MainTopBar title={currentGroup?.title} menuClick={() => setMobile(true)} />
+        <Messages messages={messages} onClick={() => setMobile(false)} />
+        <MsgInput sendClick={createMessage} onClick={() => setMobile(false)} />
+      </div>
+    );
   } else {
     sideContent = (
       <div className={styles.sideContent}>
         <Search groups={groups} update={filteredGroups => searchHandler(filteredGroups)} />
         <Groups groups={displayedGroups} groupClick={id => groupHandler(id)} />
+      </div>
+    );
+    mainContent = (
+      <div className={styles.main}>
+        <MainTopBar title="" menuClick={() => setMobile(true)} />
+        <Onboard onClick={() => setMobile(false)} />
       </div>
     );
   }
@@ -176,11 +192,7 @@ const AppView: React.FC = () => {
         {sideContent}
         <BottomBar exitClick={logoutHandler} />
       </div>
-      <div className={styles.main}>
-        <MainTopBar title={inChannel ? currentGroup?.title : ''} menuClick={() => setMobile(true)} />
-        {inChannel && <Messages messages={messages} onClick={() => setMobile(false)} />}
-        {inChannel && <MsgInput sendClick={createMessage} onClick={() => setMobile(false)} />}
-      </div>
+      {mainContent}
       {modal && <Modal backClick={() => setModal(false)} onCreate={createGroup} />}
     </div>
   );
