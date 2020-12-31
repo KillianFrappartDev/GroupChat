@@ -8,6 +8,7 @@ type PropsMessage = {
   text: string;
   image: string;
   _id: string;
+  date: string;
 };
 
 const Message: React.FC<PropsMessage> = props => {
@@ -15,7 +16,9 @@ const Message: React.FC<PropsMessage> = props => {
     <div className={styles.messageContainer}>
       <img className={styles.image} alt="User" src={props.image} />
       <div className={styles.textBox}>
-        <p className={styles.username}>{props.username}</p>
+        <p className={styles.username}>
+          {props.username} <span className={styles.date}>{props.date}</span>
+        </p>
         <p className={styles.message}>{props.text}</p>
       </div>
     </div>
@@ -45,6 +48,7 @@ const Messages: React.FC<PropsMessages> = props => {
             username={message.username}
             text={message.text}
             image={message.image}
+            date={message.date}
           />
         ))}
       </div>

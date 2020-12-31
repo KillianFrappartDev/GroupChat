@@ -22,7 +22,7 @@ const fetchMessages = async (req, res, next) => {
 };
 
 const sendMessage = async (req, res, next) => {
-  const { gid, username, text, image, uid } = req.body;
+  const { gid, username, text, image, uid, date } = req.body;
 
   // Find group
   let group;
@@ -51,7 +51,8 @@ const sendMessage = async (req, res, next) => {
     username,
     text,
     image,
-    group
+    group,
+    date
   });
 
   // Transaction

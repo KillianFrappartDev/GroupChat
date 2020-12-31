@@ -13,7 +13,7 @@ const Onboard: React.FC<Props> = props => {
     <div className={styles.container} onClick={props.onClick}>
       <div className={styles.wrapper}>
         <img className={styles.logo} alt="logo" src={logo} />
-        <h1 className={styles.title}>Welcome!</h1>
+        <h1 className={styles.title}>Hello World!</h1>
         <p className={styles.description}>
           I really appreciate that you take time to have a look to my work. This app is an instant messaging project
           that offer the possibility to create and join channels and start a conversation.

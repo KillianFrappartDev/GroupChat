@@ -99,7 +99,7 @@ const AppView: React.FC = () => {
     socket?.emit('create group', userData.id, title);
   };
 
-  const createMessage = async (text: string) => {
+  const createMessage = async (text: string, date: string) => {
     if (!socket) return;
 
     let response;
@@ -109,7 +109,8 @@ const AppView: React.FC = () => {
         text,
         username: userData.username,
         image: userData.image,
-        uid: userData.id
+        uid: userData.id,
+        date
       });
     } catch (error) {
       console.log('[ERROR][GROUPS][CREATE]: ', error);
