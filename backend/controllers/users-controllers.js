@@ -33,9 +33,8 @@ const login = async (req, res, next) => {
     return next();
   }
 
-  // If Checked is true, create token
-  let token = null;
-  if (checked) token = await createToken(user.id);
+  // Create token
+  let token = await createToken(user.id);
 
   // Send response
   res.json({
@@ -66,9 +65,8 @@ const signup = async (req, res, next) => {
     return next(new Error('[ERROR][USERS] Could not save user in DB: ' + error));
   }
 
-  // If Checked is true, create token
-  let token = null;
-  if (checked) token = await createToken(newUser.id);
+  // Create token
+  let token = await createToken(newUser.id);
 
   // Send response
   res.json({
