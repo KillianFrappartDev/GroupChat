@@ -98,7 +98,7 @@ const AppView: React.FC = () => {
     try {
       response = await axios.post(`${process.env.REACT_APP_SERVER_URL}/groups`, {
         title,
-        description
+        description: description ? description : 'No description.'
       });
     } catch (error) {
       console.log('[ERROR][GROUPS][CREATE]: ', error);
