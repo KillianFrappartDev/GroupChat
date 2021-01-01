@@ -20,7 +20,7 @@ app.use('/api/messages', messagesRoute);
 // Error Handler
 app.use((error, req, res, next) => {
   console.log('An error occured:', error);
-  res.json({ message: error.message || 'An unknown error occured.' });
+  res.json({ message: error.message || 'An unknown error occured.', error: true });
 });
 
 // Connect to DB && Start server

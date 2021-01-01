@@ -26,6 +26,12 @@ type GroupData = {
   groupClick: () => void;
 };
 
+type SnackData = {
+  open: boolean;
+  message: string | null;
+  severity: 'success' | 'error' | undefined;
+};
+
 interface IRootState {
   isLogged: boolean;
   id: string | null;
@@ -48,7 +54,7 @@ const AppView: React.FC = () => {
   const [groups, setGroups] = useState([]);
   const [currentGroup, setCurrentGroup] = useState<GroupData | null>(null);
   const [socket, setSocket] = useState<SocketIOClient.Socket | null>(null);
-  const [snack, setSnack] = useState(false);
+  const [snack, setSnack] = useState<SnackData>({ open: false, severity: undefined, message: null });
 
   useEffect(() => {
     const socket = socketIOClient(process.env.REACT_APP_SOCKET_URL!, { transports: ['websocket'] });
@@ -96,13 +102,14 @@ const AppView: React.FC = () => {
       });
     } catch (error) {
       console.log('[ERROR][GROUPS][CREATE]: ', error);
+      setSnack({ open: true, severity: 'error', message: `An error occured: Could not create group.` });
       return;
     }
     if (!response) return;
     setModal(false);
     fetchGroups();
     socket?.emit('create group', userData.id, title);
-    setSnack(true);
+    setSnack({ open: true, severity: 'success', message: `${title} channel created.` });
   };
 
   const createMessage = async (text: string, date: string) => {
@@ -120,6 +127,7 @@ const AppView: React.FC = () => {
       });
     } catch (error) {
       console.log('[ERROR][GROUPS][CREATE]: ', error);
+      setSnack({ open: true, severity: 'error', message: `An error occured: Could not send message.` });
       return;
     }
     if (!response) return;
@@ -132,6 +140,7 @@ const AppView: React.FC = () => {
       response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/groups`);
     } catch (error) {
       console.log('[ERROR][GROUPS][FETCH]: ', error);
+      setSnack({ open: true, severity: 'error', message: `An error occured: Could not fetch groups.` });
       return;
     }
     if (!response) return;
@@ -140,15 +149,21 @@ const AppView: React.FC = () => {
   };
 
   const fetchMessages = async (gid = currentGroup?._id) => {
+    if (!gid) return;
     let response;
     try {
       response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/groups/${gid}`);
     } catch (error) {
       console.log('[ERROR][MESSAGES][FETCH]: ', error);
+      setSnack({ open: true, severity: 'error', message: `An error occured: Could not fetch messages and members.` });
+      setLoading(false);
       return;
     }
     setLoading(false);
-    if (!response.data.messages) return;
+    if (response.data.error) {
+      setSnack({ open: true, severity: 'error', message: `An error occured: Could not fetch messages and members.` });
+      return;
+    }
     setMessages(response.data.messages);
     setMembers(response.data.members);
   };
@@ -196,6 +211,7 @@ const AppView: React.FC = () => {
             setDisplayedGroups(groups);
             setMembers([]);
             setMessages([]);
+            setCurrentGroup(null);
           }}
           plusClick={() => {
             setModal(true);
@@ -207,9 +223,17 @@ const AppView: React.FC = () => {
       </div>
       {mainContent}
       {modal && <Modal backClick={() => setModal(false)} onCreate={createGroup} />}
-      <Snackbar open={snack} onClose={() => setSnack(false)} message="I love snacks" autoHideDuration={3000}>
-        <MuiAlert variant="filled" onClose={() => setSnack(false)} severity="success">
-          Group created!
+      <Snackbar
+        open={snack.open}
+        onClose={() => setSnack({ open: false, severity: snack.severity, message: null })}
+        autoHideDuration={5000}
+      >
+        <MuiAlert
+          variant="filled"
+          onClose={() => setSnack({ open: false, severity: snack.severity, message: null })}
+          severity={snack.severity}
+        >
+          {snack.message}
         </MuiAlert>
       </Snackbar>
     </div>
