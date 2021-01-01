@@ -121,7 +121,12 @@ const verify = async (req, res, next) => {
   });
 };
 
+const edit = async (req, res, next) => {
+  const { id, username, image, token } = req.body;
+};
+
 exports.login = login;
 exports.signup = signup;
+exports.edit = edit;
 exports.guest = guest;
 exports.verify = verify;
