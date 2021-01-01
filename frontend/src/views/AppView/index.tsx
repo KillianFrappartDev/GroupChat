@@ -17,6 +17,7 @@ import Groups from '../../components/Side/Groups/index';
 import GroupInfo from '../../components/Side/GroupInfo/index';
 import Members from '../../components/Side/Members/index';
 import Modal from '../../components/Shared/Modal/index';
+import EditProfile from '../../components/Shared/EditProfile/index';
 import styles from './styles.module.scss';
 
 type GroupData = {
@@ -47,6 +48,7 @@ const AppView: React.FC = () => {
   const [inChannel, setInChannel] = useState(false);
   const [mobile, setMobile] = useState(false);
   const [modal, setModal] = useState(false);
+  const [editProfile, setEditProfile] = useState(false);
   const [messages, setMessages] = useState([]);
   const [members, setMembers] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -132,6 +134,8 @@ const AppView: React.FC = () => {
     socket?.emit('create group', userData.id, title);
     setSnack({ open: true, severity: 'success', message: `${title} channel created.` });
   };
+
+  const editProfileRequest = () => {};
 
   const createMessage = async (text: string, date: string) => {
     if (!socket) return;
@@ -240,10 +244,11 @@ const AppView: React.FC = () => {
           }}
         />
         {sideContent}
-        <BottomBar exitClick={logoutHandler} />
+        <BottomBar exitClick={logoutHandler} profileClick={() => setEditProfile(true)} />
       </div>
       {mainContent}
       {modal && <Modal backClick={() => setModal(false)} onCreate={createGroup} />}
+      {editProfile && <EditProfile backClick={() => setEditProfile(false)} onEdit={editProfileRequest} />}
       <Snackbar
         open={snack.open}
         onClose={() => setSnack({ open: false, severity: snack.severity, message: null })}
