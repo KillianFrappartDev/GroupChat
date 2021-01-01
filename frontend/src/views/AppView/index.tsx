@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
 import socketIOClient from 'socket.io-client';
+import { Snackbar } from '@material-ui/core';
+import MuiAlert from '@material-ui/lab/Alert';
 
 // Local Imports
 import Onboard from '../../components/Main/Onboard/index';
@@ -46,6 +48,7 @@ const AppView: React.FC = () => {
   const [groups, setGroups] = useState([]);
   const [currentGroup, setCurrentGroup] = useState<GroupData | null>(null);
   const [socket, setSocket] = useState<SocketIOClient.Socket | null>(null);
+  const [snack, setSnack] = useState(false);
 
   useEffect(() => {
     const socket = socketIOClient(process.env.REACT_APP_SOCKET_URL!, { transports: ['websocket'] });
@@ -99,6 +102,7 @@ const AppView: React.FC = () => {
     setModal(false);
     fetchGroups();
     socket?.emit('create group', userData.id, title);
+    setSnack(true);
   };
 
   const createMessage = async (text: string, date: string) => {
@@ -203,6 +207,11 @@ const AppView: React.FC = () => {
       </div>
       {mainContent}
       {modal && <Modal backClick={() => setModal(false)} onCreate={createGroup} />}
+      <Snackbar open={snack} onClose={() => setSnack(false)} message="I love snacks" autoHideDuration={3000}>
+        <MuiAlert variant="filled" onClose={() => setSnack(false)} severity="success">
+          Group created!
+        </MuiAlert>
+      </Snackbar>
     </div>
   );
 };
