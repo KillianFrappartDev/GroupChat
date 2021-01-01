@@ -94,6 +94,27 @@ const AppView: React.FC = () => {
 
   // Async Requests
   const createGroup = async (title: string, description: string) => {
+    const { token, id } = userData;
+    if (!token) {
+      setSnack({ open: true, severity: 'error', message: `Guests are not allowed to create groups, please register.` });
+      return;
+    }
+
+    let verifiedToken;
+    try {
+      verifiedToken = await axios.post(`${process.env.REACT_APP_SERVER_URL}/users/verify`, {
+        id,
+        token
+      });
+    } catch (error) {
+      console.log('[ERROR][AUTH][VERIFY]: ', error);
+      return;
+    }
+    if (!verifiedToken.data.access) {
+      localStorage.removeItem('userData');
+      return;
+    }
+
     let response;
     try {
       response = await axios.post(`${process.env.REACT_APP_SERVER_URL}/groups`, {
