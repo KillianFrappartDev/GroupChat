@@ -24,6 +24,7 @@
 .form {
   display: flex;
   flex-direction: column;
+  margin-top: 20px;
 }
 
 .input {
@@ -33,4 +34,13 @@
 .error {
   font-size: 12px;
   color: #f44336;
+}
+
+.image {
+  align-self: flex-start;
+  width: 25%;
+}
+
+.file {
+  display: none;
 }

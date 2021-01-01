@@ -135,7 +135,7 @@ const AppView: React.FC = () => {
     setSnack({ open: true, severity: 'success', message: `${title} channel created.` });
   };
 
-  const editProfileRequest = () => {};
+  const editProfileRequest = (username: string, image: string) => console.log(username, image);
 
   const createMessage = async (text: string, date: string) => {
     if (!socket) return;
