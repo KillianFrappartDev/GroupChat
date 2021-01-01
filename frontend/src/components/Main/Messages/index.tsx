@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { CircularProgress } from '@material-ui/core';
 
 // Local Imports
 import styles from './styles.module.scss';
@@ -28,6 +29,7 @@ const Message: React.FC<PropsMessage> = props => {
 type PropsMessages = {
   messages: PropsMessage[];
   onClick: () => void;
+  loading: boolean;
 };
 
 const Messages: React.FC<PropsMessages> = props => {
@@ -40,18 +42,24 @@ const Messages: React.FC<PropsMessages> = props => {
 
   return (
     <div id="chat" className={styles.container} onClick={props.onClick}>
-      <div className={styles.wrapper}>
-        {props.messages.map(message => (
-          <Message
-            _id={message._id}
-            key={message._id}
-            username={message.username}
-            text={message.text}
-            image={message.image}
-            date={message.date}
-          />
-        ))}
-      </div>
+      {props.loading ? (
+        <div className={styles.loading}>
+          <CircularProgress />
+        </div>
+      ) : (
+        <div className={styles.wrapper}>
+          {props.messages.map(message => (
+            <Message
+              _id={message._id}
+              key={message._id}
+              username={message.username}
+              text={message.text}
+              image={message.image}
+              date={message.date}
+            />
+          ))}
+        </div>
+      )}
     </div>
   );
 };

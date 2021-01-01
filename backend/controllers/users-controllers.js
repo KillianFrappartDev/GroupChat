@@ -22,14 +22,14 @@ const login = async (req, res, next) => {
   // Find User with email
   const user = await findUserWithEmail(email);
   if (!user) {
-    res.json({ message: '[USER][LOGIN] Access denied, incorrect Email.', access: false });
+    res.json({ message: 'Access denied, incorrect Email.', access: false });
     return next();
   }
 
   // Decrypt password & Check if password is valid
   const decryptedPassword = await bcrypt.compare(password, user.password);
   if (!decryptedPassword) {
-    res.json({ message: '[USER][LOGIN] Access denied, incorrect Password.', access: false });
+    res.json({ message: 'Access denied, incorrect Password.', access: false });
     return next();
   }
 
@@ -52,7 +52,7 @@ const signup = async (req, res, next) => {
   // Check if user with this email already exists
   const existingUser = await findUserWithEmail(email);
   if (existingUser) {
-    res.json({ message: '[USER][SIGNUP] Access denied, email already used.', access: false });
+    res.json({ message: 'Access denied, email already used.', access: false });
     return next();
   }
   // Encrypt password
