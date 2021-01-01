@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { TextField, FormControlLabel, Checkbox } from '@material-ui/core';
+import { TextField, FormControlLabel, Checkbox, Snackbar } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
+import MuiAlert from '@material-ui/lab/Alert';
 
 // Local Imports
 import logo from '../../../assets/gc-logo-symbol-nobg.png';
@@ -10,6 +11,11 @@ import CustomButton from '../../Shared/CustomButton/index';
 import styles from './styles.module.scss';
 
 type Props = {};
+
+type SnackData = {
+  open: boolean;
+  message: string | null;
+};
 
 const Login: React.FC<Props> = props => {
   const dispatch = useDispatch();
@@ -22,6 +28,7 @@ const Login: React.FC<Props> = props => {
   const [password, setPassword] = useState('');
   const [passwordError, setPasswordError] = useState(false);
   const [passwordHelper, setPasswordHelper] = useState('');
+  const [snack, setSnack] = useState<SnackData>({ open: false, message: null });
 
   // Async Requests
   const loginSubmit = async (checked: boolean, email: string, password: string) => {
@@ -36,7 +43,10 @@ const Login: React.FC<Props> = props => {
       console.log('[ERROR][AUTH][LOGIN]: ', error);
       return;
     }
-    if (!response.data.access) return;
+    if (!response.data.access) {
+      setSnack({ open: true, message: response.data.message });
+      return;
+    }
     if (checked) {
       localStorage.setItem('userData', JSON.stringify({ id: response.data.user.id, token: response.data.user.token }));
     }
@@ -74,7 +84,7 @@ const Login: React.FC<Props> = props => {
   };
 
   const submitHandler = (checked: boolean, email: string, password: string) => {
-    if (emailError || passwordError) {
+    if (emailError || passwordError || password.length === 0 || email.length === 0) {
       setIsValid(false);
       return;
     }
@@ -123,6 +133,11 @@ const Login: React.FC<Props> = props => {
       <Link to="/signup">
         <p className={styles.guest}>Don't have an account? Sign Up</p>
       </Link>
+      <Snackbar open={snack.open} onClose={() => setSnack({ open: false, message: null })} autoHideDuration={5000}>
+        <MuiAlert variant="filled" onClose={() => setSnack({ open: false, message: null })} severity="error">
+          {snack.message}
+        </MuiAlert>
+      </Snackbar>
     </div>
   );
 };
