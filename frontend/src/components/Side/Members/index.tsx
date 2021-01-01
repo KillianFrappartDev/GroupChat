@@ -1,4 +1,5 @@
 import React from 'react';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 // Local Imports
 import styles from './styles.module.scss';
@@ -20,17 +21,24 @@ const Member: React.FC<MemberProps> = props => {
 
 type MembersProps = {
   members: MemberProps[];
+  loading: boolean;
 };
 
 const Members: React.FC<MembersProps> = props => {
   return (
     <div className={styles.container}>
       <p className={styles.title}>Members</p>
-      <div className={styles.wrapper}>
-        {props.members.map(member => (
-          <Member key={member?._id} _id={member?._id} username={member?.username} image={member?.image} />
-        ))}
-      </div>
+      {props.loading ? (
+        <div className={styles.loading}>
+          <CircularProgress />
+        </div>
+      ) : (
+        <div className={styles.wrapper}>
+          {props.members.map(member => (
+            <Member key={member?._id} _id={member?._id} username={member?.username} image={member?.image} />
+          ))}
+        </div>
+      )}
     </div>
   );
 };

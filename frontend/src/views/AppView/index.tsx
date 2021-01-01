@@ -41,6 +41,7 @@ const AppView: React.FC = () => {
   const [modal, setModal] = useState(false);
   const [messages, setMessages] = useState([]);
   const [members, setMembers] = useState([]);
+  const [loading, setLoading] = useState(false);
   const [displayedGroups, setDisplayedGroups] = useState<GroupData[]>([]);
   const [groups, setGroups] = useState([]);
   const [currentGroup, setCurrentGroup] = useState<GroupData | null>(null);
@@ -70,6 +71,7 @@ const AppView: React.FC = () => {
   };
 
   const groupHandler = (id: string) => {
+    setLoading(true);
     const current = groups.filter((item: GroupData) => item._id === id);
     if (current.length > 0) {
       setCurrentGroup(current[0]);
@@ -141,6 +143,7 @@ const AppView: React.FC = () => {
       console.log('[ERROR][MESSAGES][FETCH]: ', error);
       return;
     }
+    setLoading(false);
     if (!response.data.messages) return;
     setMessages(response.data.messages);
     setMembers(response.data.members);
@@ -154,13 +157,13 @@ const AppView: React.FC = () => {
     sideContent = (
       <div className={styles.sideContent}>
         <GroupInfo currentGroup={currentGroup} />
-        <Members members={members} />
+        <Members members={members} loading={loading} />
       </div>
     );
     mainContent = (
       <div className={styles.main}>
         <MainTopBar title={currentGroup?.title} menuClick={() => setMobile(true)} />
-        <Messages messages={messages} onClick={() => setMobile(false)} />
+        <Messages messages={messages} onClick={() => setMobile(false)} loading={loading} />
         <MsgInput sendClick={createMessage} onClick={() => setMobile(false)} />
       </div>
     );
