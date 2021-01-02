@@ -8,6 +8,7 @@ import styles from './styles.module.scss';
 
 type Props = {
   exitClick: () => void;
+  profileClick: () => void;
 };
 
 interface IRootState {
@@ -22,7 +23,7 @@ const BottomBar: React.FC<Props> = props => {
     <div className={styles.container}>
       <div className={styles.wrapper}>
         <div className={styles.userBox}>
-          <img className={styles.image} alt="User" src={image} />
+          <img className={styles.image} alt="User" src={image} onClick={props.profileClick} />
           <p className={styles.username}>{username}</p>
         </div>
         <IconButton className={styles.exitButton} onClick={props.exitClick}>
