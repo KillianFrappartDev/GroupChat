@@ -113,6 +113,7 @@ const verify = async (req, res, next) => {
     res.json({ message: '[USER][VERIFY] Access denied, invalid token.', access: false });
     return next();
   }
+
   // Send response
   res.json({
     message: '[USER][LOGIN] Access granted.',
@@ -122,7 +123,33 @@ const verify = async (req, res, next) => {
 };
 
 const edit = async (req, res, next) => {
-  const { id, username, image, token } = req.body;
+  const { id, username, image } = req.body;
+
+  // Find user by id
+  let user;
+  try {
+    user = await User.findById(id);
+  } catch (error) {
+    return next(new Error('[ERROR][USERS] Could not find user by id: ' + error));
+  }
+
+  // Edit username and image
+  user.username = username;
+  user.image = image;
+
+  // Save changes
+  try {
+    await user.save();
+  } catch (error) {
+    return next(new Error('[ERROR][USERS] Could not save user update: ' + error));
+  }
+
+  // Send response
+  res.json({
+    message: '[USER][EDIT] User updated.',
+    access: true,
+    user: { username: user.username, image: user.image }
+  });
 };
 
 exports.login = login;

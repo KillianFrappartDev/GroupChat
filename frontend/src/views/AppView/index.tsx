@@ -135,7 +135,45 @@ const AppView: React.FC = () => {
     setSnack({ open: true, severity: 'success', message: `${title} channel created.` });
   };
 
-  const editProfileRequest = (username: string, image: string) => console.log(username, image);
+  const editProfileRequest = async (username: string, image: string) => {
+    const { token, id } = userData;
+    if (!token) {
+      setSnack({ open: true, severity: 'error', message: `Guests are not allowed to edit profile, please register.` });
+      return;
+    }
+
+    let verifiedToken;
+    try {
+      verifiedToken = await axios.post(`${process.env.REACT_APP_SERVER_URL}/users/verify`, {
+        id,
+        token
+      });
+    } catch (error) {
+      console.log('[ERROR][AUTH][VERIFY]: ', error);
+      return;
+    }
+    if (!verifiedToken.data.access) {
+      localStorage.removeItem('userData');
+      return;
+    }
+
+    let response;
+    try {
+      response = await axios.put(`${process.env.REACT_APP_SERVER_URL}/users/edit`, {
+        id,
+        username,
+        image
+      });
+    } catch (error) {
+      console.log('[ERROR][USERS][EDIT]: ', error);
+      setSnack({ open: true, severity: 'error', message: `An error occured: Could not edit profile.` });
+      return;
+    }
+    if (!response) return;
+    setEditProfile(false);
+    setSnack({ open: true, severity: 'success', message: `Profile updated.` });
+    dispatch({ type: 'EDIT', payload: { username: response.data.user.username, image: response.data.user.image } });
+  };
 
   const createMessage = async (text: string, date: string) => {
     if (!socket) return;

@@ -26,8 +26,11 @@ type UserAction = {
       case 'LOGOUT':
         return {...state, isLogged: false, username: null, image: null, token: null, id: null}
 
-        case 'GUEST':
-          return {...state, isLogged: true, username: action.payload.username, image: action.payload.image, token: null, id: action.payload.id}
+      case 'GUEST':
+        return {...state, isLogged: true, username: action.payload.username, image: action.payload.image, token: null, id: action.payload.id}
+
+      case 'EDIT':
+        return {...state, isLogged: true, username: action.payload.username, image: action.payload.image}
 
       default:
         return state;
