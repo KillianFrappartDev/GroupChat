@@ -29,6 +29,12 @@
   }
 }
 
+.exitButton {
+  @media screen and (max-width: 350px) {
+    padding: 5px;
+  }
+}
+
 .username {
   color: #828282;
   font-size: 18px;
