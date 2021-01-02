@@ -16,9 +16,9 @@
 .smallPurple {
   width: 150px;
   height: 40px;
-  border-style: none;
   font-size: 14px;
   margin: 20px 0;
+  border: solid 2px rgb(129, 3, 255);
   &:hover {
     cursor: pointer;
   }
@@ -39,7 +39,6 @@
   color: rgb(129, 3, 255);
   color: linear-gradient(90deg, rgba(129, 3, 255, 1) 0%, rgba(195, 17, 255, 1) 100%);
   border: solid 2px rgb(129, 3, 255);
-  border-color: linear-gradient(90deg, rgba(129, 3, 255, 1) 0%, rgba(195, 17, 255, 1) 100%);
   &:hover {
     background-color: rgb(129, 3, 255);
     background: linear-gradient(90deg, rgba(129, 3, 255, 1) 0%, rgba(224, 2, 255, 1) 100%) !important;
