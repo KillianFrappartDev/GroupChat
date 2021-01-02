@@ -24,6 +24,8 @@ const Onboard: React.FC<Props> = props => {
           <li>⭐️ Create a channel with the "+" icon.</li>
           <li>⭐️ Send messages with the text input.</li>
           <li>⭐️ Browse channels with the search input.</li>
+          <li>⭐️ Report a bug with the "bug" icon.</li>
+          <li>⭐️ Click on your profile to edit.</li>
           <li>⭐️ Use the "exit" icon to logout.</li>
         </ul>
       </div>

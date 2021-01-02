@@ -18,6 +18,7 @@ import GroupInfo from '../../components/Side/GroupInfo/index';
 import Members from '../../components/Side/Members/index';
 import Modal from '../../components/Shared/Modal/index';
 import EditProfile from '../../components/Shared/EditProfile/index';
+import BugReport from '../../components/Shared/BugReport/index';
 import styles from './styles.module.scss';
 
 type GroupData = {
@@ -49,6 +50,7 @@ const AppView: React.FC = () => {
   const [mobile, setMobile] = useState(false);
   const [modal, setModal] = useState(false);
   const [editProfile, setEditProfile] = useState(false);
+  const [bug, setBug] = useState(false);
   const [messages, setMessages] = useState([]);
   const [members, setMembers] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -231,6 +233,26 @@ const AppView: React.FC = () => {
     setMembers(response.data.members);
   };
 
+  const reportBug = async (title: string, description: string) => {
+    const { id } = userData;
+
+    let response;
+    try {
+      response = await axios.post(`${process.env.REACT_APP_SERVER_URL}/bugs`, {
+        id,
+        title,
+        description: description ? description : 'No description.'
+      });
+    } catch (error) {
+      console.log('[ERROR][BUGS][CREATE]: ', error);
+      setSnack({ open: true, severity: 'error', message: `An error occured: Could not report bug.` });
+      return;
+    }
+    if (!response) return;
+    setBug(false);
+    setSnack({ open: true, severity: 'success', message: `Bug reported, thank you!` });
+  };
+
   // Render
   let sideContent;
   let mainContent;
@@ -282,11 +304,22 @@ const AppView: React.FC = () => {
           }}
         />
         {sideContent}
-        <BottomBar exitClick={logoutHandler} profileClick={() => setEditProfile(true)} />
+        <BottomBar
+          exitClick={logoutHandler}
+          profileClick={() => {
+            setEditProfile(true);
+            setMobile(false);
+          }}
+          bugClick={() => {
+            setBug(true);
+            setMobile(false);
+          }}
+        />
       </div>
       {mainContent}
       {modal && <Modal backClick={() => setModal(false)} onCreate={createGroup} />}
       {editProfile && <EditProfile backClick={() => setEditProfile(false)} onEdit={editProfileRequest} />}
+      {bug && <BugReport backClick={() => setBug(false)} onReport={reportBug} />}
       <Snackbar
         open={snack.open}
         onClose={() => setSnack({ open: false, severity: snack.severity, message: null })}

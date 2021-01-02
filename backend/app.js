@@ -8,6 +8,7 @@ const express = require('express');
 const usersRoute = require('./routes/users-route');
 const groupsRoute = require('./routes/groups-route');
 const messagesRoute = require('./routes/messages-route');
+const bugsRoute = require('./routes/bugs-route');
 
 const app = express();
 app.use(express.json());
@@ -16,6 +17,7 @@ app.use(cors());
 app.use('/api/users', usersRoute);
 app.use('/api/groups', groupsRoute);
 app.use('/api/messages', messagesRoute);
+app.use('/api/bugs', bugsRoute);
 
 // Error Handler
 app.use((error, req, res, next) => {

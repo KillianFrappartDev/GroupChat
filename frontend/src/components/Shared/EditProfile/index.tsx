@@ -25,7 +25,7 @@ interface IRootState {
   image: string;
 }
 
-const Modal: React.FC<Props> = props => {
+const EditProfile: React.FC<Props> = props => {
   const { username, image } = useSelector((state: IRootState) => state);
   const imagePickerRef = useRef<HTMLInputElement>(null);
 
@@ -123,4 +123,4 @@ const Modal: React.FC<Props> = props => {
   );
 };
 
-export default Modal;
+export default EditProfile;

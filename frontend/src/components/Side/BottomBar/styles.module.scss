@@ -29,6 +29,12 @@
   }
 }
 
+.exitButton {
+  @media screen and (max-width: 350px) {
+    padding: 5px;
+  }
+}
+
 .username {
   color: #828282;
   font-size: 18px;
@@ -40,4 +46,8 @@
     color: rgb(129, 3, 255);
     color: linear-gradient(90deg, rgba(129, 3, 255, 1) 0%, rgba(195, 17, 255, 1) 100%);
   }
+}
+
+.buttonContainer {
+  display: flex;
 }
