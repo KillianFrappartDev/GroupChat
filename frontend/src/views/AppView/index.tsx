@@ -235,6 +235,22 @@ const AppView: React.FC = () => {
 
   const reportBug = async (title: string, description: string) => {
     const { id } = userData;
+
+    let response;
+    try {
+      response = await axios.post(`${process.env.REACT_APP_SERVER_URL}/bugs`, {
+        id,
+        title,
+        description: description ? description : 'No description.'
+      });
+    } catch (error) {
+      console.log('[ERROR][BUGS][CREATE]: ', error);
+      setSnack({ open: true, severity: 'error', message: `An error occured: Could not report bug.` });
+      return;
+    }
+    if (!response) return;
+    setBug(false);
+    setSnack({ open: true, severity: 'success', message: `Bug reported, thank you!` });
   };
 
   // Render
@@ -288,7 +304,17 @@ const AppView: React.FC = () => {
           }}
         />
         {sideContent}
-        <BottomBar exitClick={logoutHandler} profileClick={() => setEditProfile(true)} bugClick={() => setBug(true)} />
+        <BottomBar
+          exitClick={logoutHandler}
+          profileClick={() => {
+            setEditProfile(true);
+            setMobile(false);
+          }}
+          bugClick={() => {
+            setBug(true);
+            setMobile(false);
+          }}
+        />
       </div>
       {mainContent}
       {modal && <Modal backClick={() => setModal(false)} onCreate={createGroup} />}
