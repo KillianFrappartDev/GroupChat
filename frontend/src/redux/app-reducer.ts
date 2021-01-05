@@ -5,12 +5,19 @@ type AppState = {
   members: [];
   groups: [];
   currentGroup: null;
-  modal: boolean;
+  modal: null | 'bug' | 'edit' | 'create';
 };
 
 type AppAction = {
   type: string;
-  payload: { currentGroup: {}; displayedGroups: []; groups: []; messages: []; members: [] };
+  payload: {
+    currentGroup: {};
+    displayedGroups: [];
+    groups: [];
+    messages: [];
+    members: [];
+    modal: null | 'bug' | 'edit' | 'create';
+  };
 };
 
 const initialState: AppState = {
@@ -20,7 +27,7 @@ const initialState: AppState = {
   displayedGroups: [],
   groups: [],
   currentGroup: null,
-  modal: false
+  modal: null
 };
 
 const reducer = (state = initialState, action: AppAction) => {
@@ -36,6 +43,9 @@ const reducer = (state = initialState, action: AppAction) => {
 
     case 'FETCH MESSAGES':
       return { ...state, messages: action.payload.messages, members: action.payload.members };
+
+    case 'MODAL':
+      return { ...state, modal: action.payload.modal };
 
     case 'EXIT':
       return {
