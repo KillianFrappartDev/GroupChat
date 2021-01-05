@@ -15,6 +15,7 @@ const darkTheme = createMuiTheme({
 
 type Props = {
   onCreate: (title: string, description: string) => void;
+  title: string;
 };
 
 const Modal: React.FC<Props> = props => {
@@ -52,7 +53,7 @@ const Modal: React.FC<Props> = props => {
     <>
       <div className={styles.backdrop} onClick={() => dispatch({ type: 'MODAL', payload: { modal: null } })}></div>
       <div className={styles.modal}>
-        <h2>New channel</h2>
+        <h2>{props.title}</h2>
         <ThemeProvider theme={darkTheme}>
           <form className={styles.form} onSubmit={e => e.preventDefault()}>
             <TextField
