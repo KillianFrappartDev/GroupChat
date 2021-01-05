@@ -6,7 +6,7 @@ import { useDispatch } from 'react-redux';
 
 // Local Imports
 import Welcome from '../../components/Auth/Welcome/index';
-import Login from '../../components/Auth/Login/index';
+import Login from '../../components/Auth/Login/test';
 import Signup from '../../components/Auth/Signup/index';
 
 const darkTheme = createMuiTheme({

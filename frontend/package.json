@@ -20,6 +20,7 @@
     "@types/socket.io-client": "^1.4.34",
     "axios": "^0.21.1",
     "dotenv": "^8.2.0",
+    "formik": "^2.2.6",
     "js-sha1": "^0.6.0",
     "node-sass": "^4.0.0",
     "react": "^17.0.1",
