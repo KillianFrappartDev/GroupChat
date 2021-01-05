@@ -21,12 +21,14 @@ type Props = {
 };
 
 interface IRootState {
-  username: string;
-  image: string;
+  auth: {
+    username: string;
+    image: string;
+  };
 }
 
 const EditProfile: React.FC<Props> = props => {
-  const { username, image } = useSelector((state: IRootState) => state);
+  const { username, image } = useSelector((state: IRootState) => state.auth);
   const imagePickerRef = useRef<HTMLInputElement>(null);
 
   const [isValid, setIsValid] = useState(true);

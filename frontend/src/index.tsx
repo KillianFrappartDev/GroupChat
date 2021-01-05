@@ -1,14 +1,17 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { createStore } from 'redux';
+import { createStore, combineReducers } from 'redux';
 import { Provider } from 'react-redux';
 
 // Local imports
 import App from './App';
+import appReducer from './redux/app-reducer';
 import authReducer from './redux/auth-reducer';
 import './index.scss';
 
-const store = createStore(authReducer);
+const rootReducer = combineReducers({ auth: authReducer, app: appReducer });
+
+const store = createStore(rootReducer);
 
 ReactDOM.render(
   // <React.StrictMode></React.StrictMode>

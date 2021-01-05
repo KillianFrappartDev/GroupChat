@@ -35,30 +35,35 @@ type SnackData = {
 };
 
 interface IRootState {
-  isLogged: boolean;
-  id: string | null;
-  username: string | null;
-  image: string | null;
-  token: string | null;
+  auth: {
+    isLogged: boolean;
+    id: string | null;
+    username: string | null;
+    image: string | null;
+    token: string | null;
+  };
+  app: {
+    inChannel: boolean;
+    currentGroup: GroupData;
+    displayedGroups: GroupData[];
+    messages: [];
+    members: [];
+    groups: [];
+    modal: null | 'bug' | 'edit' | 'create';
+  };
 }
 
 const AppView: React.FC = () => {
   const dispatch = useDispatch();
-  const userData = useSelector((state: IRootState) => state);
+  const userData = useSelector((state: IRootState) => state.auth);
+  const { inChannel, currentGroup, displayedGroups, messages, members, groups, modal } = useSelector(
+    (state: IRootState) => state.app
+  );
 
-  const [inChannel, setInChannel] = useState(false);
   const [mobile, setMobile] = useState(false);
-  const [modal, setModal] = useState(false);
-  const [editProfile, setEditProfile] = useState(false);
-  const [bug, setBug] = useState(false);
-  const [messages, setMessages] = useState([]);
-  const [members, setMembers] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [displayedGroups, setDisplayedGroups] = useState<GroupData[]>([]);
-  const [groups, setGroups] = useState([]);
-  const [currentGroup, setCurrentGroup] = useState<GroupData | null>(null);
-  const [socket, setSocket] = useState<SocketIOClient.Socket | null>(null);
   const [snack, setSnack] = useState<SnackData>({ open: false, severity: undefined, message: null });
+  const [socket, setSocket] = useState<SocketIOClient.Socket | null>(null);
 
   useEffect(() => {
     const socket = socketIOClient(process.env.REACT_APP_SOCKET_URL!, { transports: ['websocket'] });
@@ -87,13 +92,12 @@ const AppView: React.FC = () => {
     setLoading(true);
     const current = groups.filter((item: GroupData) => item._id === id);
     if (current.length > 0) {
-      setCurrentGroup(current[0]);
-      setInChannel(true);
+      dispatch({ type: 'CHANGE GROUP', payload: { currentGroup: current[0] } });
     }
   };
 
   const searchHandler = (grps: GroupData[]) => {
-    setDisplayedGroups(grps);
+    dispatch({ type: 'SEARCH', payload: { displayedGroups: grps } });
   };
 
   // Async Requests
@@ -131,7 +135,7 @@ const AppView: React.FC = () => {
       return;
     }
     if (!response) return;
-    setModal(false);
+    dispatch({ type: 'MODAL', payload: { modal: null } });
     fetchGroups();
     socket?.emit('create group', userData.id, title);
     setSnack({ open: true, severity: 'success', message: `${title} channel created.` });
@@ -172,8 +176,8 @@ const AppView: React.FC = () => {
       return;
     }
     if (!response) return;
-    setEditProfile(false);
     setSnack({ open: true, severity: 'success', message: `Profile updated.` });
+    dispatch({ type: 'MODAL', payload: { modal: null } });
     dispatch({ type: 'EDIT', payload: { username: response.data.user.username, image: response.data.user.image } });
   };
 
@@ -209,8 +213,10 @@ const AppView: React.FC = () => {
       return;
     }
     if (!response) return;
-    setGroups(response.data.groups);
-    setDisplayedGroups(response.data.groups);
+    dispatch({
+      type: 'FETCH GROUPS',
+      payload: { displayedGroups: response.data.groups, groups: response.data.groups }
+    });
   };
 
   const fetchMessages = async (gid = currentGroup?._id) => {
@@ -229,8 +235,7 @@ const AppView: React.FC = () => {
       setSnack({ open: true, severity: 'error', message: `An error occured: Could not fetch messages and members.` });
       return;
     }
-    setMessages(response.data.messages);
-    setMembers(response.data.members);
+    dispatch({ type: 'FETCH MESSAGES', payload: { messages: response.data.messages, members: response.data.members } });
   };
 
   const reportBug = async (title: string, description: string) => {
@@ -249,7 +254,7 @@ const AppView: React.FC = () => {
       return;
     }
     if (!response) return;
-    setBug(false);
+    dispatch({ type: 'MODAL', payload: { modal: null } });
     setSnack({ open: true, severity: 'success', message: `Bug reported, thank you!` });
   };
 
@@ -292,14 +297,10 @@ const AppView: React.FC = () => {
         <SideTopBar
           inChannel={inChannel}
           arrowClick={() => {
-            setInChannel(false);
-            setDisplayedGroups(groups);
-            setMembers([]);
-            setMessages([]);
-            setCurrentGroup(null);
+            dispatch({ type: 'EXIT' });
           }}
           plusClick={() => {
-            setModal(true);
+            dispatch({ type: 'MODAL', payload: { modal: 'create' } });
             setMobile(false);
           }}
         />
@@ -307,19 +308,28 @@ const AppView: React.FC = () => {
         <BottomBar
           exitClick={logoutHandler}
           profileClick={() => {
-            setEditProfile(true);
+            dispatch({ type: 'MODAL', payload: { modal: 'edit' } });
             setMobile(false);
           }}
           bugClick={() => {
-            setBug(true);
+            dispatch({ type: 'MODAL', payload: { modal: 'bug' } });
             setMobile(false);
           }}
         />
       </div>
       {mainContent}
-      {modal && <Modal backClick={() => setModal(false)} onCreate={createGroup} />}
-      {editProfile && <EditProfile backClick={() => setEditProfile(false)} onEdit={editProfileRequest} />}
-      {bug && <BugReport backClick={() => setBug(false)} onReport={reportBug} />}
+      {modal === 'create' && (
+        <Modal backClick={() => dispatch({ type: 'MODAL', payload: { modal: null } })} onCreate={createGroup} />
+      )}
+      {modal === 'edit' && (
+        <EditProfile
+          backClick={() => dispatch({ type: 'MODAL', payload: { modal: null } })}
+          onEdit={editProfileRequest}
+        />
+      )}
+      {modal === 'bug' && (
+        <BugReport backClick={() => dispatch({ type: 'MODAL', payload: { modal: null } })} onReport={reportBug} />
+      )}
       <Snackbar
         open={snack.open}
         onClose={() => setSnack({ open: false, severity: snack.severity, message: null })}

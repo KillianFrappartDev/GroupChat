@@ -14,12 +14,14 @@ type Props = {
 };
 
 interface IRootState {
-  username: string;
-  image: string;
+  auth: {
+    username: string;
+    image: string;
+  };
 }
 
 const BottomBar: React.FC<Props> = props => {
-  const { username, image } = useSelector((state: IRootState) => state);
+  const { username, image } = useSelector((state: IRootState) => state.auth);
 
   return (
     <div className={styles.container}>
