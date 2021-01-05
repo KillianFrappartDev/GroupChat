@@ -4,6 +4,7 @@ import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
 import sha1 from 'sha1';
+import { useDispatch } from 'react-redux';
 
 // Local Imports
 import CustomButton from '../CustomButton/index';
@@ -16,7 +17,6 @@ const darkTheme = createMuiTheme({
 });
 
 type Props = {
-  backClick: () => void;
   onEdit: (username: string, image: string) => void;
 };
 
@@ -28,6 +28,8 @@ interface IRootState {
 }
 
 const EditProfile: React.FC<Props> = props => {
+  const dispatch = useDispatch();
+
   const { username, image } = useSelector((state: IRootState) => state.auth);
   const imagePickerRef = useRef<HTMLInputElement>(null);
 
@@ -86,7 +88,7 @@ const EditProfile: React.FC<Props> = props => {
 
   return (
     <>
-      <div className={styles.backdrop} onClick={props.backClick}></div>
+      <div className={styles.backdrop} onClick={() => dispatch({ type: 'MODAL', payload: { modal: null } })}></div>
       <div className={styles.modal}>
         <h2>Profile</h2>
         <ThemeProvider theme={darkTheme}>

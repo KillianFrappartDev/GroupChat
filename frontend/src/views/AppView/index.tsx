@@ -18,7 +18,6 @@ import GroupInfo from '../../components/Side/GroupInfo/index';
 import Members from '../../components/Side/Members/index';
 import Modal from '../../components/Shared/Modal/index';
 import EditProfile from '../../components/Shared/EditProfile/index';
-import BugReport from '../../components/Shared/BugReport/index';
 import styles from './styles.module.scss';
 
 type GroupData = {
@@ -94,10 +93,6 @@ const AppView: React.FC = () => {
     if (current.length > 0) {
       dispatch({ type: 'CHANGE GROUP', payload: { currentGroup: current[0] } });
     }
-  };
-
-  const searchHandler = (grps: GroupData[]) => {
-    dispatch({ type: 'SEARCH', payload: { displayedGroups: grps } });
   };
 
   // Async Requests
@@ -279,7 +274,10 @@ const AppView: React.FC = () => {
   } else {
     sideContent = (
       <div className={styles.sideContent}>
-        <Search groups={groups} update={filteredGroups => searchHandler(filteredGroups)} />
+        <Search
+          groups={groups}
+          update={filteredGroups => dispatch({ type: 'SEARCH', payload: { displayedGroups: filteredGroups } })}
+        />
         <Groups groups={displayedGroups} groupClick={id => groupHandler(id)} />
       </div>
     );
@@ -318,18 +316,9 @@ const AppView: React.FC = () => {
         />
       </div>
       {mainContent}
-      {modal === 'create' && (
-        <Modal backClick={() => dispatch({ type: 'MODAL', payload: { modal: null } })} onCreate={createGroup} />
-      )}
-      {modal === 'edit' && (
-        <EditProfile
-          backClick={() => dispatch({ type: 'MODAL', payload: { modal: null } })}
-          onEdit={editProfileRequest}
-        />
-      )}
-      {modal === 'bug' && (
-        <BugReport backClick={() => dispatch({ type: 'MODAL', payload: { modal: null } })} onReport={reportBug} />
-      )}
+      {modal === 'create' && <Modal onCreate={createGroup} title="New Channel" />}
+      {modal === 'edit' && <EditProfile onEdit={editProfileRequest} />}
+      {modal === 'bug' && <Modal onCreate={reportBug} title="Bug Report" />}
       <Snackbar
         open={snack.open}
         onClose={() => setSnack({ open: false, severity: snack.severity, message: null })}
