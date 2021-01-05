@@ -48,25 +48,22 @@ interface IRootState {
     displayedGroups: GroupData[];
     messages: [];
     members: [];
+    groups: [];
   };
 }
 
 const AppView: React.FC = () => {
   const dispatch = useDispatch();
   const userData = useSelector((state: IRootState) => state.auth);
-  const { inChannel, currentGroup, displayedGroups, messages, members } = useSelector((state: IRootState) => state.app);
+  const { inChannel, currentGroup, displayedGroups, messages, members, groups } = useSelector(
+    (state: IRootState) => state.app
+  );
 
-  // const [inChannel, setInChannel] = useState(false);
-  // const [currentGroup, setCurrentGroup] = useState<GroupData | null>(null);
-  // const [displayedGroups, setDisplayedGroups] = useState<GroupData[]>([]);
-  // const [messages, setMessages] = useState([]);
-  // const [members, setMembers] = useState([]);
   const [mobile, setMobile] = useState(false);
   const [modal, setModal] = useState(false);
   const [editProfile, setEditProfile] = useState(false);
   const [bug, setBug] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [groups, setGroups] = useState([]);
   const [socket, setSocket] = useState<SocketIOClient.Socket | null>(null);
   const [snack, setSnack] = useState<SnackData>({ open: false, severity: undefined, message: null });
 
@@ -97,14 +94,11 @@ const AppView: React.FC = () => {
     setLoading(true);
     const current = groups.filter((item: GroupData) => item._id === id);
     if (current.length > 0) {
-      // setCurrentGroup(current[0]);
-      // setInChannel(true);
       dispatch({ type: 'CHANGE GROUP', payload: { currentGroup: current[0] } });
     }
   };
 
   const searchHandler = (grps: GroupData[]) => {
-    // setDisplayedGroups(grps);
     dispatch({ type: 'SEARCH', payload: { displayedGroups: grps } });
   };
 
@@ -221,8 +215,6 @@ const AppView: React.FC = () => {
       return;
     }
     if (!response) return;
-    // setDisplayedGroups(response.data.groups);
-    // setGroups(response.data.groups);
     dispatch({
       type: 'FETCH GROUPS',
       payload: { displayedGroups: response.data.groups, groups: response.data.groups }
@@ -245,8 +237,6 @@ const AppView: React.FC = () => {
       setSnack({ open: true, severity: 'error', message: `An error occured: Could not fetch messages and members.` });
       return;
     }
-    // setMessages(response.data.messages);
-    // setMembers(response.data.members);
     dispatch({ type: 'FETCH MESSAGES', payload: { messages: response.data.messages, members: response.data.members } });
   };
 
@@ -309,11 +299,7 @@ const AppView: React.FC = () => {
         <SideTopBar
           inChannel={inChannel}
           arrowClick={() => {
-            // setInChannel(false);
-            // setCurrentGroup(null);
-            // setDisplayedGroups(groups);
-            setMembers([]);
-            setMessages([]);
+            dispatch({ type: 'EXIT' });
           }}
           plusClick={() => {
             setModal(true);

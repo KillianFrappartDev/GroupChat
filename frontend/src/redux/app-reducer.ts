@@ -1,15 +1,11 @@
 type AppState = {
   inChannel: boolean;
-  mobile: boolean;
-  modal: boolean;
-  editProfile: boolean;
-  bug: boolean;
-  loading: boolean;
   displayedGroups: [];
   messages: [];
   members: [];
   groups: [];
   currentGroup: null;
+  modal: boolean;
 };
 
 type AppAction = {
@@ -19,16 +15,12 @@ type AppAction = {
 
 const initialState: AppState = {
   inChannel: false,
-  mobile: false,
-  modal: false,
-  editProfile: false,
-  bug: false,
-  loading: false,
   messages: [],
   members: [],
   displayedGroups: [],
   groups: [],
-  currentGroup: null
+  currentGroup: null,
+  modal: false
 };
 
 const reducer = (state = initialState, action: AppAction) => {
@@ -44,6 +36,16 @@ const reducer = (state = initialState, action: AppAction) => {
 
     case 'FETCH MESSAGES':
       return { ...state, messages: action.payload.messages, members: action.payload.members };
+
+    case 'EXIT':
+      return {
+        ...state,
+        inChannel: false,
+        currentGroup: null,
+        displayedGroups: state.groups,
+        members: [],
+        messages: []
+      };
 
     default:
       return state;
