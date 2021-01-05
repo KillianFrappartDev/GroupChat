@@ -4,6 +4,8 @@ import { TextField, FormControlLabel, Checkbox, Snackbar } from '@material-ui/co
 import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import MuiAlert from '@material-ui/lab/Alert';
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
 
 // Local Imports
 import logo from '../../../assets/gc-logo-symbol-nobg.png';
@@ -20,17 +22,7 @@ type SnackData = {
 const Signup: React.FC<Props> = props => {
   const dispatch = useDispatch();
 
-  const [isValid, setIsValid] = useState(true);
   const [checked, setChecked] = useState(false);
-  const [username, setUsername] = useState('');
-  const [usernameError, setUsernameError] = useState(false);
-  const [usernameHelper, setUsernameHelper] = useState('');
-  const [email, setEmail] = useState('');
-  const [emailError, setEmailError] = useState(false);
-  const [emailHelper, setEmailHelper] = useState('');
-  const [password, setPassword] = useState('');
-  const [passwordError, setPasswordError] = useState(false);
-  const [passwordHelper, setPasswordHelper] = useState('');
   const [snack, setSnack] = useState<SnackData>({ open: false, message: null });
 
   // Async Requests
@@ -57,83 +49,43 @@ const Signup: React.FC<Props> = props => {
     dispatch({ type: 'LOGIN', payload: { ...response.data.user } });
   };
 
-  // Input Validation
-  const usernameHandler = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    if (e.target.value.length <= 0) {
-      setUsernameError(true);
-      setUsernameHelper('Username can not be empty.');
-    } else {
-      setUsernameError(false);
-      setUsernameHelper('');
-      setIsValid(true);
-    }
-
-    setUsername(e.target.value);
-  };
-
-  const emailHandler = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const reg = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    const currentValue = e.target.value;
-
-    if (!reg.test(currentValue)) {
-      setEmailError(true);
-      setEmailHelper('Please enter a valid email.');
-    } else {
-      setEmailError(false);
-      setEmailHelper('');
-      setIsValid(true);
-    }
-
-    setEmail(currentValue);
-  };
-
-  const passwordHandler = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    if (e.target.value.length < 6) {
-      setPasswordError(true);
-      setPasswordHelper('Passwords should have at least 6 characters.');
-    } else {
-      setPasswordError(false);
-      setPasswordHelper('');
-      setIsValid(true);
-    }
-
-    setPassword(e.target.value);
-  };
-
-  const submitHandler = (checked: boolean, email: string, password: string, username: string) => {
-    if (emailError || passwordError || email.length === 0 || password.length === 0 || username.length === 0) {
-      setIsValid(false);
-      return;
-    }
-
-    signupSubmit(checked, email, password, username);
-  };
+  const formik = useFormik({
+    initialValues: {
+      username: '',
+      email: '',
+      password: ''
+    },
+    validationSchema: Yup.object({
+      username: Yup.string().min(2, 'Must be 2 characters at least').required('Required'),
+      email: Yup.string().email('Invalid email address').required('Required'),
+      password: Yup.string().min(6, 'Must be 6 characters at least').required('Required')
+    }),
+    onSubmit: values => signupSubmit(checked, values.email, values.password, values.username)
+  });
 
   return (
     <div className={styles.container}>
       <Link to="/">
         <img className={styles.logo} alt="logo" src={logo} />
       </Link>
-      <form className={styles.form} onSubmit={e => e.preventDefault()}>
+      <form className={styles.form}>
         <TextField
           className={styles.input}
           id="username"
           label="Username"
           variant="outlined"
-          error={usernameError}
-          value={username}
-          onChange={e => usernameHandler(e)}
-          helperText={usernameHelper}
+          helperText={formik.touched.username && formik.errors.username}
+          error={formik.touched.username && !!formik.errors.username}
+          {...formik.getFieldProps('username')}
         />
         <TextField
           className={styles.input}
           id="email"
           label="Email"
           variant="outlined"
-          error={emailError}
-          value={email}
-          onChange={e => emailHandler(e)}
-          helperText={emailHelper}
+          helperText={formik.touched.email && formik.errors.email}
+          error={formik.touched.email && !!formik.errors.email}
+          {...formik.getFieldProps('email')}
         />
         <TextField
           className={styles.input}
@@ -141,10 +93,9 @@ const Signup: React.FC<Props> = props => {
           label="Password"
           type="password"
           variant="outlined"
-          value={password}
-          error={passwordError}
-          onChange={e => passwordHandler(e)}
-          helperText={passwordHelper}
+          helperText={formik.touched.password && formik.errors.password}
+          error={formik.touched.password && !!formik.errors.password}
+          {...formik.getFieldProps('password')}
         />
         <FormControlLabel
           className={styles.check}
@@ -153,13 +104,7 @@ const Signup: React.FC<Props> = props => {
           }
           label="Remember me"
         />
-        <CustomButton
-          onClick={() => submitHandler(checked, email, password, username)}
-          isPurple
-          title="Signup"
-          small={false}
-        />
-        {!isValid && <p className={styles.error}>Invalid entries.</p>}
+        <CustomButton type="submit" onClick={formik.handleSubmit} isPurple title="Signup" small={false} />
       </form>
       <Link to="/login">
         <p className={styles.guest}>Already a member ? Login</p>
