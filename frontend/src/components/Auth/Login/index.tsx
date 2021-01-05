@@ -72,11 +72,9 @@ const Login: React.FC<Props> = props => {
           label="Email"
           variant="outlined"
           type="text"
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          value={formik.values.email}
           helperText={formik.touched.email && formik.errors.email}
           error={formik.touched.email && !!formik.errors.email}
+          {...formik.getFieldProps('email')}
         />
         <TextField
           className={styles.input}
@@ -84,9 +82,7 @@ const Login: React.FC<Props> = props => {
           label="Password"
           variant="outlined"
           type="password"
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          value={formik.values.password}
+          {...formik.getFieldProps('password')}
           helperText={formik.touched.password && formik.errors.password}
           error={formik.touched.password && !!formik.errors.password}
         />
