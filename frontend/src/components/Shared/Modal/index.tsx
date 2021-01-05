@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { TextField } from '@material-ui/core';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
+import { useDispatch } from 'react-redux';
 
 // Local Imports
 import CustomButton from '../CustomButton/index';
@@ -13,11 +14,12 @@ const darkTheme = createMuiTheme({
 });
 
 type Props = {
-  backClick: () => void;
   onCreate: (title: string, description: string) => void;
 };
 
 const Modal: React.FC<Props> = props => {
+  const dispatch = useDispatch();
+
   const [isValid, setIsValid] = useState(true);
   const [title, setTitle] = useState('');
   const [titleError, setTitleEror] = useState(false);
@@ -48,7 +50,7 @@ const Modal: React.FC<Props> = props => {
 
   return (
     <>
-      <div className={styles.backdrop} onClick={props.backClick}></div>
+      <div className={styles.backdrop} onClick={() => dispatch({ type: 'MODAL', payload: { modal: null } })}></div>
       <div className={styles.modal}>
         <h2>New channel</h2>
         <ThemeProvider theme={darkTheme}>

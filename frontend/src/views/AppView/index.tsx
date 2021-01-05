@@ -318,18 +318,9 @@ const AppView: React.FC = () => {
         />
       </div>
       {mainContent}
-      {modal === 'create' && (
-        <Modal backClick={() => dispatch({ type: 'MODAL', payload: { modal: null } })} onCreate={createGroup} />
-      )}
-      {modal === 'edit' && (
-        <EditProfile
-          backClick={() => dispatch({ type: 'MODAL', payload: { modal: null } })}
-          onEdit={editProfileRequest}
-        />
-      )}
-      {modal === 'bug' && (
-        <BugReport backClick={() => dispatch({ type: 'MODAL', payload: { modal: null } })} onReport={reportBug} />
-      )}
+      {modal === 'create' && <Modal onCreate={createGroup} />}
+      {modal === 'edit' && <EditProfile onEdit={editProfileRequest} />}
+      {modal === 'bug' && <BugReport onReport={reportBug} />}
       <Snackbar
         open={snack.open}
         onClose={() => setSnack({ open: false, severity: snack.severity, message: null })}
