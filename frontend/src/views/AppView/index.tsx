@@ -35,16 +35,18 @@ type SnackData = {
 };
 
 interface IRootState {
-  isLogged: boolean;
-  id: string | null;
-  username: string | null;
-  image: string | null;
-  token: string | null;
+  auth: {
+    isLogged: boolean;
+    id: string | null;
+    username: string | null;
+    image: string | null;
+    token: string | null;
+  };
 }
 
 const AppView: React.FC = () => {
   const dispatch = useDispatch();
-  const userData = useSelector((state: IRootState) => state);
+  const userData = useSelector((state: IRootState) => state.auth);
 
   const [inChannel, setInChannel] = useState(false);
   const [mobile, setMobile] = useState(false);

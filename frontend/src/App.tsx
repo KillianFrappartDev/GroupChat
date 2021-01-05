@@ -6,15 +6,17 @@ import AppView from './views/AppView/index';
 import AuthView from './views/AuthView/index';
 
 interface IRootState {
-  isLogged: boolean;
-  id: string | null;
-  username: string | null;
-  image: string | null;
-  token: string | null;
+  auth: {
+    isLogged: boolean;
+    id: string | null;
+    username: string | null;
+    image: string | null;
+    token: string | null;
+  };
 }
 
 const App: React.FC = () => {
-  const isAuth = useSelector((state: IRootState) => state.isLogged);
+  const isAuth = useSelector((state: IRootState) => state.auth.isLogged);
 
   return isAuth ? <AppView /> : <AuthView />;
 };
