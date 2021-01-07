@@ -71,7 +71,7 @@ const EditProfile: React.FC<Props> = props => {
       console.log('ERROR', error);
     }
     if (!response) return;
-    setImage(response.data.url);
+    setImage(response.data.secure_url);
   };
 
   const uploadHandler = (e: any) => {
