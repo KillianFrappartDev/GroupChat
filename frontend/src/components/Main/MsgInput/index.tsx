@@ -36,22 +36,23 @@ const MsgInput: React.FC<Props> = props => {
     return `${output} - ${new Date().getHours()}:${new Date().getMinutes()}`;
   };
 
+  const sendHandler = () => {
+    props.sendClick(msg, getDateString());
+    setMsg('');
+  };
+
   return (
     <div className={styles.container} onClick={props.onClick}>
       <InputBase
         className={styles.input}
-        multiline
         placeholder="Write here..."
         value={msg}
         onChange={e => setMsg(e.target.value)}
-      />
-      <IconButton
-        className={styles.iconButton}
-        onClick={() => {
-          props.sendClick(msg, getDateString());
-          setMsg('');
+        onKeyDown={e => {
+          if (e.key === 'Enter') sendHandler();
         }}
-      >
+      />
+      <IconButton className={styles.iconButton} onClick={sendHandler}>
         <SendIcon className={styles.send} />
       </IconButton>
     </div>
