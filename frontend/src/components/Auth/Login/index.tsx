@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import { TextField, FormControlLabel, Checkbox, Snackbar } from '@material-ui/core';
+import { TextField, FormControlLabel, Checkbox, Snackbar, CircularProgress } from '@material-ui/core';
 import MuiAlert from '@material-ui/lab/Alert';
 import { useDispatch } from 'react-redux';
 import { useFormik } from 'formik';
@@ -22,11 +22,13 @@ type SnackData = {
 const Login: React.FC<Props> = props => {
   const dispatch = useDispatch();
 
+  const [isLoading, setIsLoading] = useState(false);
   const [checked, setChecked] = useState(false);
   const [snack, setSnack] = useState<SnackData>({ open: false, message: null });
 
   // Async Requests
   const loginSubmit = async (checked: boolean, email: string, password: string) => {
+    setIsLoading(true);
     let response;
     try {
       response = await axios.post(`${process.env.REACT_APP_SERVER_URL}/users/login`, {
@@ -36,16 +38,19 @@ const Login: React.FC<Props> = props => {
       });
     } catch (error) {
       console.log('[ERROR][AUTH][LOGIN]: ', error);
+      setIsLoading(false);
       return;
     }
     if (!response.data.access) {
       setSnack({ open: true, message: response.data.message });
+      setIsLoading(false);
       return;
     }
     if (checked) {
       localStorage.setItem('userData', JSON.stringify({ id: response.data.user.id, token: response.data.user.token }));
     }
     dispatch({ type: 'LOGIN', payload: { ...response.data.user } });
+    setIsLoading(false);
   };
 
   const formik = useFormik({
@@ -98,6 +103,7 @@ const Login: React.FC<Props> = props => {
       <Link to="/signup">
         <p className={styles.guest}>Don't have an account? Sign Up</p>
       </Link>
+      {isLoading && <CircularProgress />}
       <Snackbar open={snack.open} onClose={() => setSnack({ open: false, message: null })} autoHideDuration={5000}>
         <MuiAlert variant="filled" onClose={() => setSnack({ open: false, message: null })} severity="error">
           {snack.message}

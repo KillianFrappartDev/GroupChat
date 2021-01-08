@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { TextField, FormControlLabel, Checkbox, Snackbar } from '@material-ui/core';
+import { TextField, FormControlLabel, Checkbox, Snackbar, CircularProgress } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import MuiAlert from '@material-ui/lab/Alert';
@@ -22,11 +22,13 @@ type SnackData = {
 const Signup: React.FC<Props> = props => {
   const dispatch = useDispatch();
 
+  const [isLoading, setIsLoading] = useState(false);
   const [checked, setChecked] = useState(false);
   const [snack, setSnack] = useState<SnackData>({ open: false, message: null });
 
   // Async Requests
   const signupSubmit = async (checked: boolean, email: string, password: string, username: string) => {
+    setIsLoading(true);
     let response;
     try {
       response = await axios.post(`${process.env.REACT_APP_SERVER_URL}/users/signup`, {
@@ -37,16 +39,19 @@ const Signup: React.FC<Props> = props => {
       });
     } catch (error) {
       console.log('[ERROR][AUTH][SIGNUP]: ', error);
+      setIsLoading(false);
       return;
     }
     if (!response.data.access) {
       setSnack({ open: true, message: response.data.message });
+      setIsLoading(false);
       return;
     }
     if (checked) {
       localStorage.setItem('userData', JSON.stringify({ id: response.data.user.id, token: response.data.user.token }));
     }
     dispatch({ type: 'LOGIN', payload: { ...response.data.user } });
+    setIsLoading(false);
   };
 
   const formik = useFormik({
@@ -109,6 +114,7 @@ const Signup: React.FC<Props> = props => {
       <Link to="/login">
         <p className={styles.guest}>Already a member ? Login</p>
       </Link>
+      {isLoading && <CircularProgress />}
       <Snackbar open={snack.open} onClose={() => setSnack({ open: false, message: null })} autoHideDuration={5000}>
         <MuiAlert variant="filled" onClose={() => setSnack({ open: false, message: null })} severity="error">
           {snack.message}
