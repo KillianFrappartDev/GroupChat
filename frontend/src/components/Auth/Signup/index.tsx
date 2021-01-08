@@ -6,6 +6,7 @@ import { useDispatch } from 'react-redux';
 import MuiAlert from '@material-ui/lab/Alert';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
+import { useHistory } from 'react-router-dom';
 
 // Local Imports
 import logo from '../../../assets/gc-logo-symbol-nobg.png';
@@ -21,6 +22,7 @@ type SnackData = {
 
 const Signup: React.FC<Props> = props => {
   const dispatch = useDispatch();
+  const history = useHistory();
 
   const [isLoading, setIsLoading] = useState(false);
   const [checked, setChecked] = useState(false);
@@ -51,6 +53,7 @@ const Signup: React.FC<Props> = props => {
       localStorage.setItem('userData', JSON.stringify({ id: response.data.user.id, token: response.data.user.token }));
     }
     dispatch({ type: 'LOGIN', payload: { ...response.data.user } });
+    history.push('');
     setIsLoading(false);
   };
 
