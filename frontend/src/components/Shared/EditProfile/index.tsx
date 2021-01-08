@@ -1,5 +1,5 @@
 import React, { useState, useRef, useLayoutEffect } from 'react';
-import { TextField } from '@material-ui/core';
+import { TextField, CircularProgress } from '@material-ui/core';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
@@ -33,6 +33,7 @@ const EditProfile: React.FC<Props> = props => {
   const { username, image } = useSelector((state: IRootState) => state.auth);
   const imagePickerRef = useRef<HTMLInputElement>(null);
 
+  const [isLoading, setIsLoading] = useState(false);
   const [isValid, setIsValid] = useState(true);
   const [newUsername, setUsername] = useState(username);
   const [usernameError, setUsernameError] = useState(false);
@@ -62,16 +63,17 @@ const EditProfile: React.FC<Props> = props => {
   };
 
   const postImage = async (data: FormData) => {
-    console.log(data);
-
+    setIsLoading(true);
     let response;
     try {
       response = await axios.post('https://api.cloudinary.com/v1_1/djghq5xmi/image/upload', data);
     } catch (error) {
       console.log('ERROR', error);
+      setIsLoading(false);
     }
     if (!response) return;
     setImage(response.data.secure_url);
+    setIsLoading(false);
   };
 
   const uploadHandler = (e: any) => {
@@ -120,6 +122,7 @@ const EditProfile: React.FC<Props> = props => {
             />
             <CustomButton onClick={() => editHandler(newUsername, newImage)} isPurple title="Edit" small />
             {!isValid && <p className={styles.error}>Invalid entries.</p>}
+            {isLoading && <CircularProgress />}
           </form>
         </ThemeProvider>
       </div>
