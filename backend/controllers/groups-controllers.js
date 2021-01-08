@@ -25,8 +25,12 @@ const fetchGroupData = async (req, res, next) => {
     return next(new Error('[ERROR][GROUPS] Could not fetch groups by id: ' + error));
   }
 
+  const members = group.members.map(item => {
+    return { _id: item._id, username: item.username, image: item.image };
+  });
+
   // Send Response
-  res.json({ message: 'Group fetched!', messages: group.messages, members: group.members });
+  res.json({ message: 'Group fetched!', messages: group.messages, members });
 };
 
 const createGroup = async (req, res, next) => {
