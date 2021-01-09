@@ -51,4 +51,4 @@ cd GroupChat/backend && npm start
 
 <h2 id="codebase">Codebase Overview</h2>
 
-<p align="center"><img src="https://i.ibb.co/vQ4W8sf/Untitled-Document.png" alt="gc-logo-nobg" border="0" width="100%"></p>
+<p align="center"><img src="https://i.ibb.co/ssPJXwp/Screenshot-2021-01-09-at-15-31-58.png" alt="gc-logo-nobg" border="0" width="100%"></p>
