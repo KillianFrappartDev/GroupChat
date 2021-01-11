@@ -1,5 +1,5 @@
 import React from 'react';
-import { IconButton } from '@material-ui/core';
+import { IconButton, Tooltip } from '@material-ui/core';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import BugReportIcon from '@material-ui/icons/BugReport';
 import { useSelector } from 'react-redux';
@@ -27,16 +27,23 @@ const BottomBar: React.FC<Props> = props => {
     <div className={styles.container}>
       <div className={styles.wrapper}>
         <div className={styles.userBox}>
-          <img className={styles.image} alt="User" src={image} onClick={props.profileClick} />
+          <Tooltip title="Edit profile" placement="top">
+            <img className={styles.image} alt="User" src={image} onClick={props.profileClick} />
+          </Tooltip>
+
           <p className={styles.username}>{username}</p>
         </div>
         <div className={styles.buttonContainer}>
-          <IconButton className={styles.exitButton} onClick={props.bugClick}>
-            <BugReportIcon className={styles.exit} />
-          </IconButton>
-          <IconButton className={styles.exitButton} onClick={props.exitClick}>
-            <ExitToAppIcon className={styles.exit} />
-          </IconButton>
+          <Tooltip title="Report a bug" placement="top">
+            <IconButton className={styles.exitButton} onClick={props.bugClick}>
+              <BugReportIcon className={styles.exit} />
+            </IconButton>
+          </Tooltip>
+          <Tooltip title="Logout" placement="top">
+            <IconButton className={styles.exitButton} onClick={props.exitClick}>
+              <ExitToAppIcon className={styles.exit} />
+            </IconButton>
+          </Tooltip>
         </div>
       </div>
     </div>

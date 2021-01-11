@@ -1,3 +1,11 @@
+.black,
+.purple,
+.smallPurple {
+  &:focus {
+    outline: none;
+  }
+}
+
 .purple,
 .black {
   width: 350px;
