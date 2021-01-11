@@ -1,5 +1,5 @@
 import React from 'react';
-import { IconButton } from '@material-ui/core';
+import { IconButton, Tooltip } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 
@@ -17,17 +17,21 @@ const TopBar: React.FC<Props> = props => {
     <div className={styles.container}>
       {props.inChannel ? (
         <div className={styles.wrapperInChannel}>
-          <IconButton className={styles.arrowButton} onClick={props.arrowClick}>
-            <ArrowBackIosIcon className={styles.arrow} />
-          </IconButton>
+          <Tooltip title="Back to channels list" placement="bottom">
+            <IconButton className={styles.arrowButton} onClick={props.arrowClick}>
+              <ArrowBackIosIcon className={styles.arrow} />
+            </IconButton>
+          </Tooltip>
           <h2 className={styles.title}>All channels</h2>
         </div>
       ) : (
         <div className={styles.wrapperOutChannel}>
           <h2 className={styles.title}>Channels</h2>
-          <IconButton className={styles.addButton} onClick={props.plusClick}>
-            <AddIcon className={styles.add} />
-          </IconButton>
+          <Tooltip title="Create Channel" placement="bottom">
+            <IconButton className={styles.addButton} onClick={props.plusClick}>
+              <AddIcon className={styles.add} />
+            </IconButton>
+          </Tooltip>
         </div>
       )}
     </div>
