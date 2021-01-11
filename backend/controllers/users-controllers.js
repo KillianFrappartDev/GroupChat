@@ -1,4 +1,5 @@
 const bcrypt = require('bcryptjs');
+const { validationResult } = require('express-validator');
 const { AvatarGenerator } = require('random-avatar-generator');
 const generator = new AvatarGenerator();
 
@@ -17,7 +18,14 @@ const findUserWithEmail = async email => {
 };
 
 const login = async (req, res, next) => {
-  const { checked, email, password } = req.body;
+  const { email, password } = req.body;
+
+  // Input validation
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    res.json({ message: 'Access denied, invalid Entries.', access: false });
+    return next();
+  }
 
   // Find User with email
   const user = await findUserWithEmail(email);
@@ -45,8 +53,15 @@ const login = async (req, res, next) => {
 };
 
 const signup = async (req, res, next) => {
-  const { checked, email, password, username } = req.body;
+  const { email, password, username } = req.body;
   const defaultImage = generator.generateRandomAvatar();
+
+  // Input validation
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    res.json({ message: 'Access denied, invalid Entries.', access: false });
+    return next();
+  }
 
   // Check if user with this email already exists
   const existingUser = await findUserWithEmail(email);
@@ -124,6 +139,12 @@ const verify = async (req, res, next) => {
 
 const edit = async (req, res, next) => {
   const { id, username, image } = req.body;
+
+  // Input validation
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return next(new Error('[ERROR][USERS] Edit invalid entries: ' + error));
+  }
 
   // Find user by id
   let user;

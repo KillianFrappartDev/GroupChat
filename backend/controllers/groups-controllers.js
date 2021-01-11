@@ -1,3 +1,5 @@
+const { validationResult } = require('express-validator');
+
 // Local Imports
 const Group = require('../models/group');
 
@@ -35,6 +37,12 @@ const fetchGroupData = async (req, res, next) => {
 
 const createGroup = async (req, res, next) => {
   const { title, description } = req.body;
+
+  // Input validation
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return next(new Error('[ERROR][GROUPS] Invalid entries: ' + error));
+  }
 
   // Create Group
   const newGroup = new Group({ title, description, members: [], messages: [] });
