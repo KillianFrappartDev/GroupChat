@@ -5,6 +5,7 @@ import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import { useDispatch } from 'react-redux';
 
 // Local Imports
+import Cookie from '../../components/Shared/Cookie/index';
 import Welcome from '../../components/Auth/Welcome/index';
 import Login from '../../components/Auth/Login/index';
 import Signup from '../../components/Auth/Signup/index';
@@ -53,6 +54,7 @@ const AuthView: React.FC<Props> = props => {
 
   return (
     <ThemeProvider theme={darkTheme}>
+      <Cookie />
       <Router>
         <Switch>
           <Route path="/login" exact component={Login} />
