@@ -5,7 +5,9 @@ import image from '../../../assets/cookies.png';
 import CustomButton from '../CustomButton/index';
 import styles from './styles.module.scss';
 
-type Props = {};
+type Props = {
+  onAccept: () => void;
+};
 
 const Cookie: React.FC<Props> = props => {
   const [open, setOpen] = useState(true);
@@ -15,7 +17,7 @@ const Cookie: React.FC<Props> = props => {
         <div className={styles.box}>
           <h3 className={styles.title}>Are you hungry ?</h3>
           <div className={styles.actions}>
-            <CustomButton isPurple small title="Accept cookies" onClick={() => {}} />
+            <CustomButton isPurple small title="Accept cookies" onClick={props.onAccept} />
             <a className={styles.info} target="_blank" href="https://ec.europa.eu/info/cookies_en">
               More information.
             </a>

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
@@ -25,8 +25,11 @@ type UserData = {
 
 const AuthView: React.FC<Props> = props => {
   const dispatch = useDispatch();
+  const [cookie, setCookie] = useState(true);
 
   useEffect(() => {
+    const cookieData = localStorage.getItem('cookieData');
+    if (cookieData) setCookie(false);
     const userData = localStorage.getItem('userData');
     if (!userData) return;
     const parsedData: UserData = JSON.parse(userData);
@@ -54,7 +57,14 @@ const AuthView: React.FC<Props> = props => {
 
   return (
     <ThemeProvider theme={darkTheme}>
-      <Cookie />
+      {cookie && (
+        <Cookie
+          onAccept={() => {
+            localStorage.setItem('cookieData', 'accepted');
+            setCookie(false);
+          }}
+        />
+      )}
       <Router>
         <Switch>
           <Route path="/login" exact component={Login} />
