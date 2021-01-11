@@ -3,15 +3,17 @@
   right: 20px;
   bottom: 20px;
   display: flex;
-  align-items: center;
+  align-items: flex-end;
 }
 
 .box {
-  margin-right: 30px;
-  width: 300px;
-  height: 120px;
+  margin-right: 10px;
   background-color: #19161b;
   border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
 }
 
 .cookie {
@@ -20,6 +22,29 @@
   animation: wobble-ver-right 2s 0s infinite forwards;
   &:hover {
     cursor: pointer;
+  }
+}
+
+.title {
+  margin-bottom: 10px;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  @media screen and (max-width: 424px) {
+    flex-direction: column;
+  }
+}
+
+.info {
+  color: #006ebd;
+  font-size: 12px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  margin-left: 20px;
+  @media screen and (max-width: 424px) {
+    margin: 0px;
   }
 }
 
