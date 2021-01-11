@@ -50,9 +50,9 @@ const EditProfile: React.FC<Props> = props => {
   };
 
   const usernameHandler = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    if (e.target.value.length <= 2) {
+    if (e.target.value.length <= 2 || e.target.value.length > 12) {
       setUsernameError(true);
-      setUsernameHelper('Title should contain at least 3 characters.');
+      setUsernameHelper('Username should contain 3 to 12 characters.');
     } else {
       setUsernameError(false);
       setUsernameHelper('');

@@ -64,9 +64,15 @@ const Signup: React.FC<Props> = props => {
       password: ''
     },
     validationSchema: Yup.object({
-      username: Yup.string().min(2, 'Must be 2 characters at least').required('Required'),
+      username: Yup.string()
+        .min(2, 'Must be 2 characters at least')
+        .required('Required')
+        .max(12, 'Can not exceed 12 characters'),
       email: Yup.string().email('Invalid email address').required('Required'),
-      password: Yup.string().min(6, 'Must be 6 characters at least').required('Required')
+      password: Yup.string()
+        .min(6, 'Must be 6 characters at least')
+        .required('Required')
+        .max(20, 'Can not exceed 20 characters')
     }),
     onSubmit: values => signupSubmit(checked, values.email, values.password, values.username)
   });

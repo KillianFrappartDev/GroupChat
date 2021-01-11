@@ -63,7 +63,10 @@ const Login: React.FC<Props> = props => {
     },
     validationSchema: Yup.object({
       email: Yup.string().email('Invalid email address').required('Required'),
-      password: Yup.string().min(6, 'Must be 6 characters at least').required('Required')
+      password: Yup.string()
+        .min(6, 'Must be 6 characters at least')
+        .required('Required')
+        .max(20, 'Can not exceed 20 characters')
     }),
     onSubmit: values => loginSubmit(checked, values.email, values.password)
   });
