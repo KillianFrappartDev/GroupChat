@@ -2,7 +2,7 @@
 
 <h2>Introduction</h2>
 <p>GroupChat is an instant messaging webapp built from scratch for my personnal portfolio. This project is not intended to generate profit, but the source code is open source and anyone interested can fork the project and do whatever he wants with.</p>
-<p>Have a look to the <a href="https://kf-groupchat.com" target="blank">live version</a> , this readme or its dedicated <a href="#">blog post</a> to learn more about the project structure and the technologies involved.</p> 
+<p>Have a look to the <a href="https://kf-groupchat.com" target="blank">live version</a> , this readme or its dedicated <a href="https://dev.to/killianfrappartdev/instant-messaging-app-made-with-react-typescript-node-socket-io-27pc" target="blank">blog post</a> to learn more about the project structure and the technologies involved.</p> 
 <p>In case you want to share problems or tips, please go ahead, it is very much appreciated! 😇</p>
 
 <h2>Table of Contents</h2>
