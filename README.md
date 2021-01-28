@@ -14,7 +14,7 @@
 </ul>
 
 <h2 id="setup">Setup</h2>
-<p>In order to run the project locally, you need node installed globally.</p>
+<p>In order to run the project locally, you need node and npm installed globally.</p>
 <h3>Step 1</h3>
 Clone the project and install dependencies in both frontend and backend directory.
 
