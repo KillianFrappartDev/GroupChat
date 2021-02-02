@@ -91,5 +91,5 @@ cd GroupChat/backend && npm start
 <li><b>Node</b>: JavaScript runtime.</li>
 <li><b>Express</b>: Node library for building REST API.</li>
 <li><b>MongoDB</b>: NoSQL Database.</li>
-<li><b>SocketIO</b>: Enables real-time, bidirectional and event-based communication..</li>
+<li><b>SocketIO</b>: Enables real-time, bidirectional and event-based communication.</li>
 </ul>
